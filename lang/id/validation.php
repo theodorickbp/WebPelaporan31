@@ -1,0 +1,51 @@
+<?php
+
+return [
+    'accepted' => ':Attribute harus diterima.',
+    'array' => ':Attribute harus berupa daftar.',
+    'boolean' => ':Attribute harus bernilai benar atau salah.',
+    'confirmed' => 'Konfirmasi :attribute tidak cocok.',
+    'current_password' => 'Kata sandi saat ini salah.',
+    'different' => ':Attribute harus berbeda dari :other.',
+    'email' => ':Attribute harus berupa alamat email yang valid.',
+    'enum' => ':Attribute yang dipilih tidak valid.',
+    'file' => ':Attribute harus berupa berkas.',
+    'filled' => ':Attribute wajib diisi.',
+    'image' => ':Attribute harus berupa gambar.',
+    'in' => ':Attribute yang dipilih tidak valid.',
+    'integer' => ':Attribute harus berupa angka bulat.',
+    'lowercase' => ':Attribute harus huruf kecil.',
+    'max' => [
+        'array' => ':Attribute maksimal :max item.',
+        'file' => ':Attribute maksimal :max KB.',
+        'numeric' => ':Attribute maksimal :max.',
+        'string' => ':Attribute maksimal :max karakter.',
+    ],
+    'mimes' => ':Attribute harus berformat: :values.',
+    'mimetypes' => ':Attribute harus berformat: :values.',
+    'min' => [
+        'array' => ':Attribute minimal :min item.',
+        'file' => ':Attribute minimal :min KB.',
+        'numeric' => ':Attribute minimal :min.',
+        'string' => ':Attribute minimal :min karakter.',
+    ],
+    'numeric' => ':Attribute harus berupa angka.',
+    'required' => ':Attribute wajib diisi.',
+    'required_if' => ':Attribute wajib diisi.',
+    'string' => ':Attribute harus berupa teks.',
+    'unique' => ':Attribute ini sudah dipakai.',
+    'uploaded' => ':Attribute gagal diunggah.',
+
+    'custom' => [],
+
+    'attributes' => [
+        'name' => 'nama',
+        'email' => 'email',
+        'kelas' => 'kelas',
+        'password' => 'kata sandi',
+        'current_password' => 'kata sandi saat ini',
+        'note' => 'catatan',
+        'otp' => 'kode OTP',
+        'status' => 'status',
+    ],
+];
