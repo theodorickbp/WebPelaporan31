@@ -19,11 +19,13 @@
                     <x-gallery :report="$report" />
                     <p class="hint">Ketuk foto untuk membuka. Cubit atau scroll untuk zoom.</p>
                 </section>
+            @elseif ($report->wasPhotoPurged())
+                <p class="hint">Foto bukti sudah dihapus otomatis karena laporan ini sudah lama {{ $report->status === \App\Enums\ReportStatus::Done ? 'selesai' : 'ditolak' }}.</p>
             @endif
 
             <section class="panel">
                 <dl class="details">
-                    <div><dt>Pelapor</dt><dd>{{ $report->user->name }}, kelas {{ $report->user->kelas }}</dd></div>
+                    <div><dt>Pelapor</dt><dd>{{ $report->user->name }}, {{ $report->user->reporterLabel() }}</dd></div>
                     <div><dt>Jenis masalah</dt><dd>{{ $report->category->label() }}</dd></div>
                     <div><dt>Lokasi</dt><dd>{{ $report->location }}</dd></div>
                     <div><dt>Dilaporkan</dt><dd>{{ $report->created_at->translatedFormat('j F Y, H:i') }}</dd></div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class ProfileController extends Controller
         return view('profile.edit', ['user' => $request->user(), 'devices' => $devices]);
     }
 
-    /** Siswa dan Admin/Toolman sama-sama boleh mengubah profil sendiri. */
+    /** Siswa, Guru, dan Admin/Toolman sama-sama boleh mengubah profil sendiri. */
     public function update(Request $request): RedirectResponse
     {
         $user = $request->user();
@@ -33,7 +34,16 @@ class ProfileController extends Controller
         ];
 
         if (! $user->isAdmin()) {
-            $rules['kelas'] = ['required', 'string', 'max:30'];
+            if ($request->has('phone')) {
+                $request->merge(['phone' => preg_replace('/[\s\-().]+/', '', (string) $request->input('phone')) ?: null]);
+            }
+
+            $rules['phone'] = ['nullable', 'string', 'regex:/^\+?[0-9]{9,15}$/'];
+
+            // Kelas hanya untuk siswa (opsional). NISN/NIP tidak bisa diubah sendiri.
+            if ($user->role === UserRole::Student) {
+                $rules['kelas'] = ['nullable', 'string', 'max:30'];
+            }
         }
 
         $user->update($request->validate($rules));

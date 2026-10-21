@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\AccountStatus;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\PasswordResetOtp;
@@ -15,7 +16,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 /**
- * Lupa kata sandi KHUSUS siswa, lewat kode OTP ke email.
+ * Lupa kata sandi untuk siswa dan guru (yang akunnya sudah disetujui), lewat kode OTP ke email.
  *
  * Admin/Toolman sengaja tidak bisa lewat sini: hanya 1 akun, dan kalau lupa,
  * penggantian dilakukan manual oleh pengelola sekolah (lewat seeder/database),
@@ -26,7 +27,7 @@ use Illuminate\View\View;
  */
 class PasswordResetController extends Controller
 {
-    private const NEUTRAL_MESSAGE = 'Kalau email itu terdaftar sebagai akun siswa, kode OTP sudah dikirim.';
+    private const NEUTRAL_MESSAGE = 'Kalau email itu terdaftar sebagai akun siswa atau guru yang aktif, kode OTP sudah dikirim.';
 
     public function showRequest(): View
     {
@@ -38,7 +39,7 @@ class PasswordResetController extends Controller
         $data = $request->validate(['email' => ['required', 'email']]);
         $email = Str::lower(trim($data['email']));
 
-        $user = User::where('email', $email)->where('role', UserRole::Student->value)->first();
+        $user = $this->findEligibleUser($email);
 
         if ($user) {
             $length = (int) config('sipasar.otp.length');
@@ -87,7 +88,7 @@ class PasswordResetController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::where('email', $email)->where('role', UserRole::Student->value)->first();
+        $user = $this->findEligibleUser($email);
         $record = $user ? PasswordResetOtp::where('user_id', $user->id)->first() : null;
 
         $genericFail = fn (string $msg) => back()->withErrors(['otp' => $msg])->withInput();
@@ -125,6 +126,15 @@ class PasswordResetController extends Controller
         $request->session()->forget('password_reset.email');
 
         return redirect()->route('login')->with('toast', 'Kata sandi berhasil diganti. Silakan masuk dengan kata sandi baru.');
+    }
+
+    /** Hanya siswa/guru dengan akun yang sudah disetujui. Admin dan akun pending tidak bisa lewat sini. */
+    private function findEligibleUser(string $email): ?User
+    {
+        return User::where('email', $email)
+            ->whereIn('role', [UserRole::Student->value, UserRole::Teacher->value])
+            ->where('account_status', AccountStatus::Approved->value)
+            ->first();
     }
 
     private function mask(string $email): string

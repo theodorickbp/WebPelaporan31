@@ -537,3 +537,34 @@ p { margin: 0; }
 }
 .btn-soft[aria-busy="true"]::after, .btn-ghost[aria-busy="true"]::after { border-color: rgba(47, 91, 234, .25); border-top-color: var(--blue); }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Pengajuan akun (Buat Akun + persetujuan Admin) ---------- */
+.auth-main-wide { max-width: 560px; }
+.field-row { display: grid; gap: 14px; align-items: start; }
+.field-row > .field { min-width: 0; }
+.field-row-id { grid-template-columns: minmax(0, 1fr) 9.5rem; }
+.field-hint { margin-top: -8px; }
+@media (min-width: 560px) {
+    .field-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .field-row-id { grid-template-columns: minmax(0, 1fr) 11rem; }
+}
+.form-note { background: var(--sky); color: var(--blue-d); border-radius: var(--r-md); padding: 12px 14px; font-size: .9375rem; font-weight: 600; }
+.form-note-ok { background: var(--mint-l); color: #0a7554; }
+.notice-link {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--r-md);
+    background: var(--sun-l); color: var(--ink); text-decoration: none; font-weight: 500;
+}
+.notice-link span { flex: 1; }
+.notice-link:hover { background: #ffedb3; }
+.account-search { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+.account-list { display: grid; gap: 14px; }
+.account { display: grid; gap: 14px; }
+.account-name { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.account-name strong { font: 800 1.05rem/1.2 var(--font-head); overflow-wrap: anywhere; }
+.account-actions { display: grid; gap: 10px; }
+.account-actions form { margin: 0; }
+.reject-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.reject-form .input { flex: 1 1 180px; min-width: 0; }
+@media (min-width: 640px) {
+    .account-actions { grid-template-columns: 200px minmax(0, 1fr); align-items: start; }
+}

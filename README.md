@@ -56,3 +56,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## Buat Akun (pengajuan akun) dan persetujuan Admin
+
+- Halaman `/daftar` sekarang bernama **Buat Akun**. Data: Nama Lengkap, Email, NISN/NIP + Role (Siswa/Guru),
+  No. Telpon, Alasan/Perihal (opsional), Kata sandi + Konfirmasi.
+- NISN siswa harus 10 digit; guru mengisi NIP/NUPTK (8-20 digit). Nomor induk tidak boleh kembar.
+- Akun baru berstatus **pending** dan belum bisa masuk. Toolman menyetujui atau menolak di menu **Akun**
+  (`/admin/akun`); penolakan boleh disertai alasan, dan akun yang ditolak bisa disetujui lagi.
+- Pendaftar diberi tahu lewat email (butuh konfigurasi MAIL_*; kalau gagal kirim, keputusan tetap tersimpan).
+- Guru memakai area yang sama dengan siswa (membuat dan memantau laporan).
+- Akun lama otomatis berstatus disetujui saat menjalankan `php artisan migrate`.

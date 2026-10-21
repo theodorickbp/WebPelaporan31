@@ -29,6 +29,8 @@
                 <x-gallery :report="$report" />
                 <p class="hint">Ketuk foto untuk membuka dan memperbesar.</p>
             </section>
+        @elseif ($report->wasPhotoPurged())
+            <p class="hint">Foto bukti sudah dihapus otomatis karena laporan ini sudah lama {{ $report->status === \App\Enums\ReportStatus::Done ? 'selesai' : 'ditolak' }}.</p>
         @endif
 
         <section class="panel">

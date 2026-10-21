@@ -16,7 +16,7 @@
                 <span class="ticket-meta-item"><x-icon :name="$report->category->icon()" :size="14" /> {{ $report->category->label() }}</span>
             </div>
             @if ($showUser)
-                <div class="ticket-user">oleh {{ $report->user->name }}, {{ $report->user->kelas }}</div>
+                <div class="ticket-user">oleh {{ $report->user->name }}, {{ $report->user->reporterLabel() }}</div>
             @endif
             @if ($report->isOverdue())
                 <div class="ticket-overdue"><x-icon name="clock" :size="14" /> Menunggu lama, segera ditinjau</div>

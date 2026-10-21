@@ -7,6 +7,7 @@ use App\Enums\ReportStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Report;
+use App\Models\User;
 use App\Services\ReportService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,10 +16,15 @@ use Illuminate\View\View;
 
 class ReportController extends Controller
 {
-    public function home(): View
+    public function home(ReportService $service): View
     {
+        // Tanpa cron: cek "sambil lalu" di halaman yang paling sering dibuka Toolman.
+        // Proses hapusnya sendiri di-debounce di dalam method ini (maks 1x/jam).
+        $service->maybePurgePhotosPastRetention();
+
         return view('admin.home', [
             'counts' => self::statusCounts(),
+            'pendingAccounts' => User::pending()->count(),
             'queue' => Report::with(['user', 'photos'])
                 ->where('status', ReportStatus::Submitted->value)->oldest()->limit(5)->get(),
             'working' => Report::with(['user', 'photos'])

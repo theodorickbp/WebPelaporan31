@@ -1,0 +1,11 @@
+UPDATE SI-PASAR: Buat Akun + persetujuan Admin
+
+1. Extract zip ini, lalu copy SEMUA folder/file di dalamnya ke folder proyek
+   (Documents\sipasar), pilih Replace kalau ditanya. Jangan hapus apa pun.
+2. Di CMD, dari folder proyek:
+      php artisan migrate
+   (JANGAN pakai migrate:fresh, supaya data lama tidak hilang.)
+3. Tes:
+      php artisan test
+4. Jalankan: php artisan serve
+   Login sebagai Toolman, buka menu "Akun" untuk menyetujui pengajuan.

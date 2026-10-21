@@ -97,7 +97,9 @@ class ReportService
             if ($note !== null) {
                 $fresh->admin_note = $note;
             }
-            if ($to === ReportStatus::Done) {
+            if ($to === ReportStatus::Done || $to === ReportStatus::Declined) {
+                // "resolved_at" di sini berarti "mencapai status akhir" (Selesai ATAU Ditolak),
+                // dipakai sebagai patokan kapan mulai dihitung retensi foto (lihat purgePhotosPastRetention).
                 $fresh->resolved_at = now();
             }
             $fresh->save();
@@ -129,6 +131,46 @@ class ReportService
     {
         DB::transaction(fn () => $report->delete());
         Storage::disk(self::DISK)->deleteDirectory("reports/{$report->id}");
+    }
+
+    /**
+     * Hapus FOTO (file + baris report_photos) dari laporan yang sudah "Selesai"/"Ditolak"
+     * lebih dari sipasar.photo_retention_days hari. Baris laporannya sendiri TIDAK disentuh -
+     * judul, status, tanggal, catatan Toolman, dan riwayatnya tetap ada selamanya.
+     *
+     * @return int jumlah laporan yang foto-nya dibersihkan
+     */
+    public function purgePhotosPastRetention(): int
+    {
+        $cutoff = now()->subDays((int) config('sipasar.photo_retention_days'));
+
+        $reports = Report::query()
+            ->whereIn('status', [ReportStatus::Done->value, ReportStatus::Declined->value])
+            ->whereNotNull('resolved_at')
+            ->where('resolved_at', '<=', $cutoff)
+            ->whereHas('photos') // lewati yang fotonya sudah pernah dibersihkan sebelumnya
+            ->get(['id']);
+
+        foreach ($reports as $report) {
+            Storage::disk(self::DISK)->deleteDirectory("reports/{$report->id}");
+            $report->photos()->delete();
+        }
+
+        return $reports->count();
+    }
+
+    /**
+     * Pembersihan foto TANPA cron job: dipanggil dari halaman yang sering dibuka Toolman
+     * (lihat Admin\ReportController::home), tapi proses hapusnya sendiri cuma benar-benar
+     * jalan sekali per jam (di-debounce lewat cache) supaya tidak query/scan tiap buka halaman.
+     */
+    public function maybePurgePhotosPastRetention(): void
+    {
+        Cache::remember('sipasar:photo-purge:last-run', 3600, function () {
+            $this->purgePhotosPastRetention();
+
+            return now();
+        });
     }
 
     private function makeThumbnails(Report $report): void

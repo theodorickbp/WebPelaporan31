@@ -25,10 +25,24 @@
 
             @unless ($user->isAdmin())
                 <div class="field">
-                    <label for="kelas">Kelas</label>
-                    <input id="kelas" name="kelas" type="text" class="input @error('kelas') is-invalid @enderror" value="{{ old('kelas', $user->kelas) }}" required maxlength="30">
-                    @error('kelas') <p class="field-error">{{ $message }}</p> @enderror
+                    <label for="nomor_induk_view">NISN/NIP</label>
+                    <input id="nomor_induk_view" type="text" class="input" value="{{ $user->nomor_induk ?: '-' }}" disabled>
+                    <p class="hint">Nomor ini diverifikasi Admin saat pengajuan akun, jadi tidak bisa diubah sendiri.</p>
                 </div>
+
+                <div class="field">
+                    <label for="phone">No. Telpon</label>
+                    <input id="phone" name="phone" type="tel" class="input @error('phone') is-invalid @enderror" value="{{ old('phone', $user->phone) }}" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Contoh: 081234567890">
+                    @error('phone') <p class="field-error">{{ $message }}</p> @enderror
+                </div>
+
+                @if ($user->role === \App\Enums\UserRole::Student)
+                    <div class="field">
+                        <label for="kelas">Kelas <span class="muted">(opsional)</span></label>
+                        <input id="kelas" name="kelas" type="text" class="input @error('kelas') is-invalid @enderror" value="{{ old('kelas', $user->kelas) }}" maxlength="30" placeholder="Contoh: XI RPL 1">
+                        @error('kelas') <p class="field-error">{{ $message }}</p> @enderror
+                    </div>
+                @endif
             @endunless
 
             <button type="submit" class="btn btn-primary">Simpan perubahan</button>

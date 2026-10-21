@@ -12,7 +12,12 @@ return [
     // Ambang "menunggu lama" untuk pengingat visual ke Toolman (laporan status "submitted" yang belum ditinjau).
     'overdue_hours' => (int) env('SIPASAR_OVERDUE_HOURS', 48),
 
-    // Lupa kata sandi (khusus siswa) lewat kode OTP dikirim ke email.
+    // Foto bukti laporan yang sudah "Selesai"/"Ditolak" dihapus otomatis setelah sekian hari,
+    // supaya penyimpanan tidak terus membesar. Data/riwayat laporannya SENDIRI (judul, status,
+    // tanggal, catatan Toolman) tetap disimpan selamanya - yang dihapus cuma file foto aslinya.
+    'photo_retention_days' => (int) env('SIPASAR_PHOTO_RETENTION_DAYS', 7),
+
+    // Lupa kata sandi (siswa & guru) lewat kode OTP dikirim ke email.
     'otp' => [
         'length' => 6,
         'expires_minutes' => 10,

@@ -14,16 +14,16 @@
                         <div class="ticket-meta"><span class="ticket-meta-item">Kode OTP dikirim ke email</span></div>
                     </div>
                 </div>
-                <div class="ticket-stub"><span class="ticket-code">Khusus siswa</span><span>~1 menit</span></div>
+                <div class="ticket-stub"><span class="ticket-code">Siswa &amp; guru</span><span>~1 menit</span></div>
             </div>
-            <p>Masukkan email yang kamu pakai daftar, nanti kode OTP dikirim ke sana.</p>
+            <p>Masukkan email yang kamu pakai saat membuat akun, nanti kode OTP dikirim ke sana.</p>
         </aside>
 
         <div class="auth-main">
             <x-brand />
             <div>
                 <h1>Lupa kata sandi</h1>
-                <p class="muted" style="margin-top:6px">Khusus akun siswa. Masukkan email yang kamu pakai saat daftar.</p>
+                <p class="muted" style="margin-top:6px">Untuk akun siswa dan guru yang sudah aktif. Masukkan email yang kamu pakai saat membuat akun.</p>
             </div>
 
             <form method="POST" action="{{ route('password.email') }}" class="stack" data-once>

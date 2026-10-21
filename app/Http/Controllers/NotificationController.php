@@ -28,6 +28,11 @@ class NotificationController extends Controller
         $notification = $request->user()->notifications()->whereKey($id)->firstOrFail();
         $notification->markAsRead();
 
+        // Pengajuan akun baru -> halaman persetujuan akun milik Toolman.
+        if (($notification->data['account_request'] ?? false) && $request->user()->isAdmin()) {
+            return redirect()->route('admin.accounts.index');
+        }
+
         $code = $notification->data['report_code'] ?? null;
 
         if (! $code) {

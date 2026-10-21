@@ -65,6 +65,18 @@ class Report extends Model
         return $this->hasMany(ReportStatusLog::class)->orderBy('created_at')->orderBy('id');
     }
 
+    /**
+     * Setiap laporan WAJIB punya minimal 1 foto saat dibuat (lihat StoreReportRequest), jadi
+     * kalau laporan yang sudah "Selesai"/"Ditolak" ternyata fotonya kosong sekarang, itu pasti
+     * karena sudah dihapus otomatis oleh ReportService::purgePhotosPastRetention(), bukan
+     * karena memang tidak pernah ada. Dipakai untuk menampilkan catatan di halaman detail.
+     */
+    public function wasPhotoPurged(): bool
+    {
+        return $this->photos->isEmpty()
+            && in_array($this->status, [ReportStatus::Done, ReportStatus::Declined], true);
+    }
+
     /** Laporan yang belum ditinjau (masih "submitted") dan sudah melewati ambang waktu di config. Dipakai untuk pengingat visual ke Toolman. */
     public function isOverdue(): bool
     {

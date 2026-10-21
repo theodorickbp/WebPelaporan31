@@ -7,7 +7,7 @@
         <x-brand />
         <div class="row">
             <a href="{{ route('login') }}" class="btn btn-ghost">Masuk</a>
-            <a href="{{ route('register') }}" class="btn btn-primary">Daftar</a>
+            <a href="{{ route('register') }}" class="btn btn-primary">Buat Akun</a>
         </div>
     </header>
 

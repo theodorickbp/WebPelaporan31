@@ -6,6 +6,14 @@
     <div class="page-head"><h1>Ringkasan</h1></div>
 
     <div class="stack-lg">
+        @if (($pendingAccounts ?? 0) > 0)
+            <a href="{{ route('admin.accounts.index') }}" class="notice-link">
+                <x-icon name="users" :size="20" />
+                <span><strong>{{ $pendingAccounts }} pengajuan akun</strong> menunggu persetujuan</span>
+                <x-icon name="chevron-right" :size="18" />
+            </a>
+        @endif
+
         <div class="stats">
             <a href="{{ route('admin.reports.index', ['status' => 'submitted']) }}" class="stat stat-hot">
                 <strong>{{ $counts['submitted'] ?? 0 }}</strong><span>Menunggu ditinjau</span>
