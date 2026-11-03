@@ -21,7 +21,7 @@ class StoreReportRequest extends FormRequest
             'location' => ['required', 'string', 'max:120'],
             'description' => ['nullable', 'string', 'max:2000'],
             'photos' => ['required', 'array', 'min:1', 'max:'.config('sipasar.max_photos')],
-            'photos.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:'.config('sipasar.max_photo_kb')],
+            'photos.*' => ['image', 'mimes:jpg,jpeg,png,gif,bmp', 'max:'.config('sipasar.max_photo_kb')],
         ];
     }
 
@@ -34,7 +34,7 @@ class StoreReportRequest extends FormRequest
             'photos.min' => 'Tambahkan minimal 1 foto bukti.',
             'photos.max' => 'Maksimal '.config('sipasar.max_photos').' foto per laporan.',
             'photos.*.image' => 'File harus berupa gambar.',
-            'photos.*.mimes' => 'Foto harus berformat JPG, PNG, atau WebP.',
+            'photos.*.mimes' => 'Foto harus berformat JPG, JPEG, PNG, GIF, atau BMP. WebP tidak didukung.',
             'photos.*.max' => "Ukuran tiap foto maksimal {$maxMb} MB.",
             'photos.*.uploaded' => 'Foto gagal diunggah. Coba lagi dengan foto yang lebih kecil.',
             'category.required' => 'Pilih jenis masalahnya.',

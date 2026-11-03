@@ -46,7 +46,6 @@
         @forelse ($accounts as $account)
             @if ($loop->first) <div class="account-list"> @endif
             @php
-                $isTeacher = $account->role === \App\Enums\UserRole::Teacher;
                 $state = $account->account_status;
             @endphp
             <article class="panel account">
@@ -59,7 +58,7 @@
                 </div>
 
                 <dl class="details">
-                    <div><dt>{{ $isTeacher ? 'NIP / NUPTK' : 'NISN' }}</dt><dd>{{ $account->nomor_induk ?: '-' }}</dd></div>
+                    <div><dt>NISN</dt><dd>{{ $account->nomor_induk ?: '-' }}</dd></div>
                     <div><dt>Email</dt><dd>{{ $account->email }}</dd></div>
                     <div>
                         <dt>No. Telpon</dt>

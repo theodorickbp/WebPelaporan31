@@ -24,11 +24,11 @@
             <x-brand />
             <div>
                 <h1>Masuk</h1>
-                <p class="muted" style="margin-top:6px">Siswa, guru, dan Toolman masuk dari halaman yang sama.</p>
+                <p class="muted" style="margin-top:6px">Siswa dan Toolman masuk dari halaman yang sama.</p>
             </div>
 
-            @if (session('notice'))
-                <p class="form-note form-note-ok" role="status">{{ session('notice') }}</p>
+            @if (session('status'))
+                <div class="callout callout-good" role="status">{{ session('status') }}</div>
             @endif
 
             <form method="POST" action="{{ route('login.attempt') }}" class="stack">
@@ -57,7 +57,7 @@
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Masuk</button>
             </form>
 
-            <p class="muted">Belum punya akun? <a href="{{ route('register') }}">Buat Akun</a></p>
+            <p class="muted">Belum punya akun? <a href="{{ route('register') }}">Daftar sebagai siswa</a></p>
         </div>
     </div>
 @endsection

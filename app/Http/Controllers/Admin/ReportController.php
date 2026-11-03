@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Report;
 use App\Models\User;
+use App\Enums\AccountStatus;
 use App\Services\ReportService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class ReportController extends Controller
 
         return view('admin.home', [
             'counts' => self::statusCounts(),
-            'pendingAccounts' => User::pending()->count(),
+            'pendingAccounts' => User::query()->where('account_status', AccountStatus::Pending->value)->count(),
             'queue' => Report::with(['user', 'photos'])
                 ->where('status', ReportStatus::Submitted->value)->oldest()->limit(5)->get(),
             'working' => Report::with(['user', 'photos'])

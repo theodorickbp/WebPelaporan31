@@ -112,14 +112,14 @@
             return new File([blob], `${base}.jpg`, { type: 'image/jpeg', lastModified: Date.now() });
         } catch (err) {
             // Tidak bisa didekode: pakai file asli hanya jika formatnya didukung server.
-            if (/^image\/(jpeg|png|webp)$/.test(file.type)) return file;
+            if (/^image\/(jpeg|png|gif|bmp)$/.test(file.type)) return file;
             throw err;
         }
     };
 
     const addFiles = async (fileList) => {
         const files = Array.from(fileList || []).filter(
-            (f) => f.type.startsWith('image/') || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name)
+            (f) => /^image\/(jpeg|png|gif|bmp)$/i.test(f.type) || /\.(jpe?g|png|gif|bmp)$/i.test(f.name)
         );
         if (!files.length) { say('Hanya file gambar yang bisa dipakai sebagai bukti.', true); return; }
 
@@ -146,13 +146,20 @@
 
     // ----- Kamera browser (laptop / desktop) -----
     const openCamera = async () => {
+        if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            say('Kamera browser tidak tersedia. Jika perangkat memiliki kamera, gunakan kamera perangkat; jika tidak, pilih foto dari folder.', true);
+            camInput.click();
+            return;
+        }
+
         try {
             stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
                 audio: false,
             });
         } catch (err) {
-            say('Kamera tidak bisa dibuka. Izinkan akses kamera di browser, atau seret foto ke kotak ini.', true);
+            say('Kamera tidak dapat diakses. Silakan pilih foto dari folder perangkat.', true);
+            galInput.click();
             return;
         }
         video.srcObject = stream;
@@ -183,15 +190,13 @@
         }, 'image/jpeg', 0.9);
     };
 
-    const canUseBrowserCamera = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-    const isTouch = () => window.matchMedia('(pointer: coarse)').matches;
 
     root.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
         switch (btn.dataset.action) {
             case 'camera':
-                if (isTouch() || !canUseBrowserCamera()) camInput.click(); else openCamera();
+                openCamera();
                 break;
             case 'gallery': galInput.click(); break;
             case 'snap': snap(); break;
@@ -227,6 +232,7 @@
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !cam.hidden) closeCamera();
     });
+    window.addEventListener('pagehide', closeCamera, { once: true });
 
     // ----- Kirim form -----
     if (form) {

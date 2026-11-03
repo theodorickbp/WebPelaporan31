@@ -7,11 +7,10 @@
 
     <div class="stack-lg">
         @if (($pendingAccounts ?? 0) > 0)
-            <a href="{{ route('admin.accounts.index') }}" class="notice-link">
-                <x-icon name="users" :size="20" />
-                <span><strong>{{ $pendingAccounts }} pengajuan akun</strong> menunggu persetujuan</span>
-                <x-icon name="chevron-right" :size="18" />
-            </a>
+            <section class="callout" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+                <div><strong>{{ $pendingAccounts }} pengajuan akun menunggu persetujuan</strong><span class="small">Periksa data siswa sebelum menyetujui.</span></div>
+                <a class="btn btn-primary" href="{{ route('admin.accounts.index') }}">Tinjau akun</a>
+            </section>
         @endif
 
         <div class="stats">

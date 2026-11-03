@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\HomeController;
@@ -15,17 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'landing'])->name('home');
 
 /*
-| Tamu. Siswa dan Guru mengajukan akun (aktif setelah disetujui Admin);
-| akun Admin/Toolman dibuat lewat seeder.
+| Tamu. Hanya siswa yang bisa mendaftar; akun Admin/Toolman dibuat lewat seeder.
 */
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/masuk', [AuthController::class, 'login'])->name('login.attempt');
     Route::get('/daftar', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/daftar', [AuthController::class, 'register'])
-        ->middleware('throttle:6,10')->name('register.store');
+    Route::post('/daftar', [AuthController::class, 'register'])->name('register.store');
 
-    // Lupa kata sandi (siswa & guru) lewat kode OTP ke email.
+    // Lupa kata sandi (khusus siswa) lewat kode OTP ke email.
     Route::get('/lupa-sandi', [PasswordResetController::class, 'showRequest'])->name('password.request');
     Route::post('/lupa-sandi', [PasswordResetController::class, 'sendOtp'])->middleware('throttle:5,15')->name('password.email');
     Route::get('/lupa-sandi/verifikasi', [PasswordResetController::class, 'showVerify'])->name('password.otp');
@@ -33,7 +32,7 @@ Route::middleware('guest')->group(function () {
 });
 
 /*
-| Semua yang sudah login (siswa, guru & admin). AuthenticateSession membuat
+| Semua yang sudah login (siswa & admin). AuthenticateSession membuat
 | "keluarkan perangkat lain" dan ganti kata sandi berlaku di semua perangkat.
 */
 Route::middleware(['auth', AuthenticateSession::class])->group(function () {
@@ -54,9 +53,9 @@ Route::middleware(['auth', AuthenticateSession::class])->group(function () {
 });
 
 /*
-| Area siswa dan guru (guru membuat laporan seperti siswa).
+| Area siswa.
 */
-Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':student,teacher'])
+Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':student'])
     ->prefix('siswa')->name('student.')->group(function () {
         Route::get('/', [Student\ReportController::class, 'home'])->name('home');
         Route::get('/laporan', [Student\ReportController::class, 'index'])->name('reports.index');
@@ -73,11 +72,11 @@ Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':stude
 Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':admin'])
     ->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [Admin\ReportController::class, 'home'])->name('home');
+        Route::get('/akun', [AccountController::class, 'index'])->name('accounts.index');
+        Route::post('/akun/{user}/setujui', [AccountController::class, 'approve'])->name('accounts.approve');
+        Route::post('/akun/{user}/tolak', [AccountController::class, 'reject'])->name('accounts.reject');
+
         Route::get('/laporan', [Admin\ReportController::class, 'index'])->name('reports.index');
         Route::get('/laporan/{report}', [Admin\ReportController::class, 'show'])->name('reports.show');
         Route::post('/laporan/{report}/status', [Admin\ReportController::class, 'transition'])->name('reports.transition');
-
-        Route::get('/akun', [Admin\AccountController::class, 'index'])->name('accounts.index');
-        Route::post('/akun/{user}/setujui', [Admin\AccountController::class, 'approve'])->name('accounts.approve');
-        Route::post('/akun/{user}/tolak', [Admin\AccountController::class, 'reject'])->name('accounts.reject');
     });

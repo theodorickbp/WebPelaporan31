@@ -17,7 +17,7 @@ return [
     // tanggal, catatan Toolman) tetap disimpan selamanya - yang dihapus cuma file foto aslinya.
     'photo_retention_days' => (int) env('SIPASAR_PHOTO_RETENTION_DAYS', 7),
 
-    // Lupa kata sandi (siswa & guru) lewat kode OTP dikirim ke email.
+    // Lupa kata sandi (khusus siswa) lewat kode OTP dikirim ke email.
     'otp' => [
         'length' => 6,
         'expires_minutes' => 10,

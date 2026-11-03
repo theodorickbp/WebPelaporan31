@@ -538,33 +538,38 @@ p { margin: 0; }
 .btn-soft[aria-busy="true"]::after, .btn-ghost[aria-busy="true"]::after { border-color: rgba(47, 91, 234, .25); border-top-color: var(--blue); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------- Pengajuan akun (Buat Akun + persetujuan Admin) ---------- */
-.auth-main-wide { max-width: 560px; }
-.field-row { display: grid; gap: 14px; align-items: start; }
-.field-row > .field { min-width: 0; }
-.field-row-id { grid-template-columns: minmax(0, 1fr) 9.5rem; }
-.field-hint { margin-top: -8px; }
-@media (min-width: 560px) {
-    .field-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-    .field-row-id { grid-template-columns: minmax(0, 1fr) 11rem; }
-}
-.form-note { background: var(--sky); color: var(--blue-d); border-radius: var(--r-md); padding: 12px 14px; font-size: .9375rem; font-weight: 600; }
-.form-note-ok { background: var(--mint-l); color: #0a7554; }
-.notice-link {
-    display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--r-md);
-    background: var(--sun-l); color: var(--ink); text-decoration: none; font-weight: 500;
-}
-.notice-link span { flex: 1; }
-.notice-link:hover { background: #ffedb3; }
-.account-search { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+
+/* ---------- Pengajuan akun & responsivitas tambahan ---------- */
 .account-list { display: grid; gap: 14px; }
-.account { display: grid; gap: 14px; }
-.account-name { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.account-name strong { font: 800 1.05rem/1.2 var(--font-head); overflow-wrap: anywhere; }
+.account { display: grid; gap: 16px; min-width: 0; }
+.account-name { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; min-width: 0; }
+.account .details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.account .details dd { overflow-wrap: anywhere; }
 .account-actions { display: grid; gap: 10px; }
-.account-actions form { margin: 0; }
-.reject-form { display: flex; gap: 8px; flex-wrap: wrap; }
-.reject-form .input { flex: 1 1 180px; min-width: 0; }
-@media (min-width: 640px) {
-    .account-actions { grid-template-columns: 200px minmax(0, 1fr); align-items: start; }
+.reject-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.account-search { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+.account-search .field { min-width: 0; }
+.camera { padding-top: env(safe-area-inset-top); }
+.camera video { max-height: calc(100dvh - 120px); }
+.dropzone-actions .btn { min-width: 0; white-space: normal; }
+
+@media (max-width: 520px) {
+    .main { padding-inline: 12px; }
+    .panel { padding: 14px; }
+    .account .details { grid-template-columns: minmax(0, 1fr); }
+    .account-search { grid-template-columns: minmax(0, 1fr); }
+    .account-search > .btn { width: 100%; }
+    .reject-form { grid-template-columns: minmax(0, 1fr); }
+    .track { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .track-step { font-size: .7rem; overflow-wrap: anywhere; }
+    .track-dot { width: 25px; height: 25px; }
+    .ticket-main { gap: 9px; padding: 12px; }
+    .ticket-thumb { width: 52px; height: 52px; }
+    .tab { font-size: .6875rem; }
+    .tab-icon { width: 40px; }
+    .dropzone-actions { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (min-width: 900px) {
+    .account-actions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
 }

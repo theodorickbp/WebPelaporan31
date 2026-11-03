@@ -25,7 +25,7 @@
 
             <section class="panel">
                 <dl class="details">
-                    <div><dt>Pelapor</dt><dd>{{ $report->user->name }}, {{ $report->user->reporterLabel() }}</dd></div>
+                    <div><dt>Pelapor</dt><dd>{{ $report->user->name }}, kelas {{ $report->user->kelas }}</dd></div>
                     <div><dt>Jenis masalah</dt><dd>{{ $report->category->label() }}</dd></div>
                     <div><dt>Lokasi</dt><dd>{{ $report->location }}</dd></div>
                     <div><dt>Dilaporkan</dt><dd>{{ $report->created_at->translatedFormat('j F Y, H:i') }}</dd></div>

@@ -1,0 +1,20 @@
+SI-PASAR - CATATAN PERBAIKAN
+
+Perbaikan inti:
+1. Pendaftaran siswa menyimpan status akun sebagai pending dan tidak langsung login.
+2. Admin/Toolman memiliki menu Akun untuk menyetujui atau menolak pengajuan.
+3. Admin menerima notifikasi internal saat ada pengajuan akun baru.
+4. Login akun pending/rejected ditolak; akun lama tetap approved dari default migrasi yang sudah ada.
+5. Pengajuan siswa meminta NISN 10 digit, kelas, nomor telepon, email, dan kata sandi.
+6. Pelaporan menerima JPG/JPEG, PNG, GIF, BMP. WebP tidak diterima.
+7. Tombol kamera membuka kamera browser jika tersedia; jika tidak, fallback ke kamera native perangkat atau pemilih file/folder.
+8. Foto tetap dikompresi di browser sebelum diunggah.
+9. CSS responsif tambahan untuk daftar akun, formulir, kamera, kartu, dan layar kecil.
+10. Perbaikan kompatibilitas konfigurasi MySQL untuk PHP yang belum memiliki class Pdo\\Mysql, serta fallback LOG_CHANNEL kosong.
+
+PENTING:
+- ZIP ini hanya overlay file yang diubah. Tidak berisi .env, database, storage, vendor, atau .git.
+- Backup folder proyek dan database sebelum menimpa file.
+- Jangan timpa .env, database/database.sqlite, atau folder storage.
+- Jalankan php artisan config:clear, route:clear, view:clear, lalu php artisan migrate.
+- Pengujian Laravel otomatis belum dapat dijalankan di lingkungan pembuatan patch karena folder vendor/Composer tidak tersedia. Semua file PHP yang diubah sudah lolos php -l dan JavaScript uploader lolos node --check.

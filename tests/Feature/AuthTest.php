@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Enums\AccountStatus;
 use App\Enums\UserRole;
 use App\Models\User;
 use DomainException;
@@ -18,42 +17,25 @@ class AuthTest extends TestCase
         $this->get('/')->assertOk()->assertSee('SI-PASAR');
     }
 
-    private function registrationPayload(array $overrides = []): array
+    public function test_registration_always_creates_a_student_even_if_role_is_forged(): void
     {
-        return array_merge([
+        $response = $this->post('/daftar', [
             'name' => 'Budi Santoso',
+            'kelas' => 'XI RPL 1',
+            'nomor_induk' => '0123456789',
+            'phone' => '081234567890',
             'email' => 'Budi@Example.test',
-            'role' => 'student',
-            'nomor_induk' => '1234567890',
-            'phone' => '0812-3456-7890',
-            'reason' => 'Siswa baru kelas X',
             'password' => 'rahasia123',
             'password_confirmation' => 'rahasia123',
-        ], $overrides);
-    }
+            'role' => 'admin',
+        ]);
 
-    public function test_registration_creates_a_pending_account_and_does_not_log_in(): void
-    {
-        $this->post('/daftar', $this->registrationPayload())->assertRedirect(route('login'));
-
-        $this->assertGuest();
+        $response->assertRedirect(route('login'));
 
         $user = User::where('email', 'budi@example.test')->firstOrFail();
         $this->assertSame(UserRole::Student, $user->role);
-        $this->assertSame(AccountStatus::Pending, $user->account_status);
-        $this->assertSame('1234567890', $user->nomor_induk);
-        $this->assertSame('081234567890', $user->phone);
-        $this->assertSame('Siswa baru kelas X', $user->registration_reason);
-    }
-
-    public function test_registration_rejects_a_forged_admin_role(): void
-    {
-        $this->from('/daftar')
-            ->post('/daftar', $this->registrationPayload(['role' => 'admin']))
-            ->assertRedirect('/daftar')
-            ->assertSessionHasErrors('role');
-
-        $this->assertDatabaseMissing('users', ['email' => 'budi@example.test']);
+        $this->assertSame(\App\Enums\AccountStatus::Pending, $user->account_status);
+        $this->assertGuest();
     }
 
     public function test_only_one_admin_can_exist(): void

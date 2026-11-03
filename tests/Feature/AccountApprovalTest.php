@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Enums\AccountStatus;
-use App\Enums\UserRole;
 use App\Models\User;
 use App\Notifications\AccountRequested;
 use App\Notifications\AccountReviewed;
@@ -21,6 +20,7 @@ class AccountApprovalTest extends TestCase
         return array_merge([
             'name' => 'Calon Pengguna',
             'email' => 'calon@example.test',
+            'kelas' => 'XII RPL C',
             'role' => 'student',
             'nomor_induk' => '0012345678',
             'phone' => '081234567890',
@@ -30,19 +30,6 @@ class AccountApprovalTest extends TestCase
     }
 
     // ---------- Pengajuan akun ----------
-
-    public function test_teacher_can_apply_with_nip(): void
-    {
-        $this->post('/daftar', $this->payload([
-            'email' => 'guru@example.test',
-            'role' => 'teacher',
-            'nomor_induk' => '198001012005011001',
-        ]))->assertRedirect(route('login'));
-
-        $user = User::where('email', 'guru@example.test')->firstOrFail();
-        $this->assertSame(UserRole::Teacher, $user->role);
-        $this->assertSame(AccountStatus::Pending, $user->account_status);
-    }
 
     public function test_reason_is_optional(): void
     {
@@ -239,41 +226,18 @@ class AccountApprovalTest extends TestCase
             ->assertSee('pengajuan akun');
     }
 
-    // ---------- Guru ----------
-
-    public function test_teacher_uses_the_student_area_like_a_student(): void
-    {
-        $teacher = User::factory()->teacher()->create();
-
-        $this->actingAs($teacher)->get('/dashboard')->assertRedirect(route('student.home'));
-        $this->actingAs($teacher)->get(route('student.home'))->assertOk();
-        $this->actingAs($teacher)->get(route('student.reports.create'))->assertOk();
-        $this->actingAs($teacher)->get('/admin')->assertRedirect(route('dashboard'));
-    }
-
-    public function test_teacher_can_update_phone_on_profile(): void
-    {
-        $teacher = User::factory()->teacher()->create();
-
-        $this->actingAs($teacher)
-            ->put('/profil', ['name' => 'Bu Guru', 'email' => 'guru2@example.test', 'phone' => '0811-222-3333'])
-            ->assertSessionHasNoErrors();
-
-        $this->assertSame('08112223333', $teacher->fresh()->phone);
-    }
-
     // ---------- Lupa kata sandi ----------
 
-    public function test_teachers_can_reset_password_but_pending_accounts_cannot(): void
+    public function test_approved_students_can_reset_password_but_pending_accounts_cannot(): void
     {
         Notification::fake();
-        $teacher = User::factory()->teacher()->create(['email' => 'guru@example.test']);
+        $student = User::factory()->create(['email' => 'siswa@example.test']);
         $pending = User::factory()->pending()->create(['email' => 'baru@example.test']);
 
-        $this->post(route('password.email'), ['email' => 'guru@example.test']);
+        $this->post(route('password.email'), ['email' => 'siswa@example.test']);
         $this->post(route('password.email'), ['email' => 'baru@example.test']);
 
-        Notification::assertSentTo($teacher, OtpPasswordReset::class);
+        Notification::assertSentTo($student, OtpPasswordReset::class);
         Notification::assertNotSentTo($pending, OtpPasswordReset::class);
     }
 }

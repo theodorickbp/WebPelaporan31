@@ -7,13 +7,12 @@
         $user = auth()->user();
         $isAdmin = $user->isAdmin();
         $unread = $user->unreadNotifications()->count();
-        $pendingAccounts = $isAdmin ? \App\Models\User::pending()->count() : 0;
 
         $nav = $isAdmin
             ? [
                 ['route' => 'admin.home', 'match' => ['admin.home'], 'label' => 'Ringkasan', 'icon' => 'layout'],
                 ['route' => 'admin.reports.index', 'match' => ['admin.reports.*'], 'label' => 'Laporan', 'icon' => 'inbox'],
-                ['route' => 'admin.accounts.index', 'match' => ['admin.accounts.*'], 'label' => 'Akun', 'icon' => 'users', 'badge' => $pendingAccounts],
+                ['route' => 'admin.accounts.index', 'match' => ['admin.accounts.*'], 'label' => 'Akun', 'icon' => 'users'],
                 ['route' => 'notifications.index', 'match' => ['notifications.*'], 'label' => 'Notifikasi', 'icon' => 'bell', 'badge' => $unread],
                 ['route' => 'profile.edit', 'match' => ['profile.*'], 'label' => 'Profil', 'icon' => 'user'],
             ]
@@ -53,7 +52,7 @@
 
             <div class="rail-user">
                 <div class="rail-user-name">{{ $user->name }}</div>
-                <div class="rail-user-sub">{{ $user->roleSubtitle() }}</div>
+                <div class="rail-user-sub">{{ $isAdmin ? 'Admin / Toolman' : 'Kelas '.$user->kelas }}</div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn btn-ghost btn-block"><x-icon name="logout" :size="18" /> Keluar</button>

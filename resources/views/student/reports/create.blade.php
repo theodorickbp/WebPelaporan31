@@ -15,14 +15,14 @@
         <section class="uploader" data-uploader data-max="{{ config('sipasar.max_photos') }}" data-max-mb="{{ round(config('sipasar.max_photo_kb') / 1024) }}">
             <h2 id="photo-title">Foto bukti</h2>
 
-            <input type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/webp" data-real hidden>
-            <input type="file" accept="image/*" capture="environment" data-camera-input hidden>
-            <input type="file" accept="image/*" multiple data-gallery-input hidden>
+            <input type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/gif,image/bmp" data-real hidden>
+            <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp" capture="environment" data-camera-input hidden>
+            <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp" multiple data-gallery-input hidden>
 
             <div class="dropzone" data-drop role="group" aria-labelledby="photo-title">
                 <span class="dropzone-icon"><x-icon name="camera" :size="28" /></span>
                 <p>
-                    <span class="dz-mobile">Ambil foto langsung atau pilih dari galeri.</span>
+                    <span class="dz-mobile">Jika kamera tersedia, kamera akan terbuka. Jika tidak, pilih foto dari folder perangkat.</span>
                     <span class="dz-desktop">Seret foto ke kotak ini, tempel dengan Ctrl+V, atau pakai tombol di bawah.</span>
                 </p>
                 <div class="dropzone-actions">
@@ -96,5 +96,5 @@
 <x-zoom-viewer-loader />
 
 @push('scripts')
-    <script src="{{ asset('js/photo-uploader.min.js') }}?v={{ @filemtime(public_path('js/photo-uploader.min.js')) }}" defer></script>
+    <script src="{{ asset('js/photo-uploader.js') }}?v={{ @filemtime(public_path('js/photo-uploader.js')) }}" defer></script>
 @endpush
