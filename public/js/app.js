@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Tombol "Tolak" wajib disertai catatan.
+    // Tombol "Tolak" / "Selesaikan" / "Kembalikan" wajib disertai catatan.
     document.querySelectorAll('[data-requires-note]').forEach((btn) => {
         btn.addEventListener('click', (e) => {
             const note = btn.form && btn.form.querySelector('textarea[name="note"]');
             if (note && !note.value.trim()) {
                 e.preventDefault();
-                note.setCustomValidity('Tulis alasan penolakan supaya siswa tahu.');
+                note.setCustomValidity(btn.dataset.noteMsg || 'Tulis alasan penolakan supaya siswa tahu.');
                 note.reportValidity();
                 note.addEventListener('input', () => note.setCustomValidity(''), { once: true });
             }
@@ -61,17 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Skeleton shimmer untuk gambar (thumbnail tiket, galeri, thumbnail draft unggahan)
     // sampai gambarnya benar-benar selesai dimuat. Kelas .is-loading dipasang manual
     // sebagai fallback untuk browser lama yang belum dukung CSS :has().
+    const SKELETON = '.ticket-thumb, .gallery-item, .thumb-open';
     const markLoaded = (img) => {
         img.setAttribute('data-loaded', '');
-        img.closest('.ticket-thumb, .gallery-item, .thumb-open')?.classList.remove('is-loading');
+        img.closest(SKELETON)?.classList.remove('is-loading');
     };
     document.querySelectorAll('.ticket-thumb img, .gallery-item img, .thumb-open img').forEach((img) => {
-        img.closest('.ticket-thumb, .gallery-item, .thumb-open')?.classList.add('is-loading');
-        if (img.complete && img.naturalWidth > 0) markLoaded(img);
-        else {
-            img.addEventListener('load', () => markLoaded(img), { once: true });
-            img.addEventListener('error', () => markLoaded(img), { once: true }); // jangan macet shimmer kalau gagal
-        }
+        // Gambar tidak pernah disembunyikan; skeleton hanya latar. Jadi apa pun yang terjadi
+        // pada event load, foto tetap terlihat begitu browser selesai mengunduhnya.
+        if (img.complete && img.naturalWidth > 0) { markLoaded(img); return; }
+        img.closest(SKELETON)?.classList.add('is-loading');
+        img.addEventListener('load', () => markLoaded(img), { once: true });
+        img.addEventListener('error', () => markLoaded(img), { once: true });
+        setTimeout(() => markLoaded(img), 15000); // jaga-jaga: jangan biarkan shimmer berjalan selamanya
     });
 
     initPwaBanner();

@@ -26,9 +26,9 @@ class ReportStatusChanged extends Notification
         return (new MailMessage)
             ->subject("Laporan {$this->report->code}: {$this->status->label()}")
             ->greeting("Halo, {$notifiable->name}")
-            ->line($this->status->studentMessage())
+            ->line($this->message())
             ->line("Laporan: {$this->report->title}")
-            ->when(filled($this->note), fn (MailMessage $m) => $m->line("Catatan Toolman: {$this->note}"))
+            ->when(filled($this->note), fn (MailMessage $m) => $m->line("Catatan Admin: {$this->note}"))
             ->action('Lihat laporan', route('student.reports.show', $this->report));
     }
 
@@ -38,7 +38,12 @@ class ReportStatusChanged extends Notification
             'report_code' => $this->report->code,
             'title' => $this->report->title,
             'status' => $this->status->value,
-            'message' => $this->status->studentMessage(),
+            'message' => $this->message(),
         ];
+    }
+
+    private function message(): string
+    {
+        return $this->status->studentMessage($this->report->toolman?->name);
     }
 }

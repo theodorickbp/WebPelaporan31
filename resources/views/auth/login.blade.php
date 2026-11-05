@@ -24,7 +24,7 @@
             <x-brand />
             <div>
                 <h1>Masuk</h1>
-                <p class="muted" style="margin-top:6px">Siswa dan Toolman masuk dari halaman yang sama.</p>
+                <p class="muted" style="margin-top:6px">Siswa, Toolman, dan Admin masuk dari halaman yang sama.</p>
             </div>
 
             @if (session('status'))
@@ -34,7 +34,7 @@
             <form method="POST" action="{{ route('login.attempt') }}" class="stack">
                 @csrf
                 <div class="field">
-                    <label for="email">Email</label>
+                    <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
                     <input id="email" name="email" type="email" class="input @error('email') is-invalid @enderror"
                            value="{{ old('email') }}" required autofocus autocomplete="username" inputmode="email"
                            @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
@@ -43,7 +43,7 @@
 
                 <div class="field">
                     <div class="row row-between">
-                        <label for="password" style="margin:0">Kata sandi</label>
+                        <label for="password" style="margin:0">Kata sandi <span class="req" aria-hidden="true">*</span></label>
                         <a href="{{ route('password.request') }}" class="small">Lupa kata sandi?</a>
                     </div>
                     <div class="input-group">

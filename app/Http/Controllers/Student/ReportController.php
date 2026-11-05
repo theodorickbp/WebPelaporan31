@@ -46,9 +46,13 @@ class ReportController extends Controller
         ]);
     }
 
-    public function create(): View
+    public function create(Request $request, ReportService $service): View
     {
-        return view('student.reports.create', ['categories' => ReportCategory::cases()]);
+        return view('student.reports.create', [
+            'categories' => ReportCategory::cases(),
+            'remaining' => $service->dailyRemaining($request->user()),
+            'dailyMax' => (int) config('sipasar.max_reports_per_day'),
+        ]);
     }
 
     public function store(StoreReportRequest $request, ReportService $service): RedirectResponse
@@ -61,14 +65,16 @@ class ReportController extends Controller
 
         return redirect()
             ->route('student.reports.show', $report)
-            ->with('toast', 'Laporan terkirim. Toolman akan segera meninjaunya.');
+            ->with('toast', $report->status === ReportStatus::Waiting
+                ? 'Laporan terkirim. Antrean Admin sedang penuh, laporanmu akan diproses sesuai urutan.'
+                : 'Laporan terkirim. Admin akan segera meninjaunya.');
     }
 
     public function show(Report $report): View
     {
         Gate::authorize('view', $report);
 
-        $report->load(['photos', 'logs.user']);
+        $report->load(['photos', 'toolman', 'logs.user', 'logs.toolman']);
 
         return view('student.reports.show', ['report' => $report]);
     }
@@ -78,7 +84,7 @@ class ReportController extends Controller
         Gate::authorize('view', $report);
 
         if (! Gate::allows('delete', $report)) {
-            return back()->with('toast', 'Laporan yang sudah ditinjau Toolman tidak bisa dibatalkan.');
+            return back()->with('toast', 'Laporan yang sudah ditinjau Admin tidak bisa dibatalkan.');
         }
 
         $service->cancel($report);

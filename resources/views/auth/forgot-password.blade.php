@@ -29,7 +29,7 @@
             <form method="POST" action="{{ route('password.email') }}" class="stack" data-once>
                 @csrf
                 <div class="field">
-                    <label for="email">Email</label>
+                    <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
                     <input id="email" name="email" type="email" class="input @error('email') is-invalid @enderror" value="{{ old('email') }}" required autofocus autocomplete="email" inputmode="email">
                     @error('email') <p class="field-error">{{ $message }}</p> @enderror
                 </div>

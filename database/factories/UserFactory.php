@@ -31,6 +31,11 @@ class UserFactory extends Factory
     }
 
 
+    public function toolman(): static
+    {
+        return $this->state(fn () => ['role' => UserRole::Toolman, 'kelas' => null]);
+    }
+
     public function pending(): static
     {
         return $this->state(fn () => ['account_status' => \App\Enums\AccountStatus::Pending]);

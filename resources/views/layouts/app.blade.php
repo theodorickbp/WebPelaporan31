@@ -6,9 +6,18 @@
     @php
         $user = auth()->user();
         $isAdmin = $user->isAdmin();
+        $isToolman = $user->isToolman();
+        $isStaff = $user->isStaff();
         $unread = $user->unreadNotifications()->count();
 
-        $nav = $isAdmin
+        $nav = $isToolman
+            ? [
+                ['route' => 'toolman.home', 'match' => ['toolman.home'], 'label' => 'Beranda', 'icon' => 'layout'],
+                ['route' => 'toolman.reports.index', 'match' => ['toolman.reports.*'], 'label' => 'Tugas', 'icon' => 'wrench'],
+                ['route' => 'notifications.index', 'match' => ['notifications.*'], 'label' => 'Notifikasi', 'icon' => 'bell', 'badge' => $unread],
+                ['route' => 'profile.edit', 'match' => ['profile.*'], 'label' => 'Profil', 'icon' => 'user'],
+            ]
+            : ($isAdmin
             ? [
                 ['route' => 'admin.home', 'match' => ['admin.home'], 'label' => 'Ringkasan', 'icon' => 'layout'],
                 ['route' => 'admin.reports.index', 'match' => ['admin.reports.*'], 'label' => 'Laporan', 'icon' => 'inbox'],
@@ -22,7 +31,7 @@
                 ['route' => 'student.reports.create', 'match' => ['student.reports.create'], 'label' => 'Lapor', 'icon' => 'camera', 'primary' => true],
                 ['route' => 'notifications.index', 'match' => ['notifications.*'], 'label' => 'Notifikasi', 'icon' => 'bell', 'badge' => $unread],
                 ['route' => 'profile.edit', 'match' => ['profile.*'], 'label' => 'Profil', 'icon' => 'user'],
-            ];
+            ]);
     @endphp
 
     <div class="shell">
@@ -30,7 +39,7 @@
         <aside class="rail">
             <x-brand :href="route('dashboard')" />
 
-            @unless ($isAdmin)
+            @unless ($isStaff)
                 <a href="{{ route('student.reports.create') }}" class="btn btn-sun btn-block rail-cta">
                     <x-icon name="camera" :size="20" /> Buat laporan
                 </a>
@@ -52,7 +61,7 @@
 
             <div class="rail-user">
                 <div class="rail-user-name">{{ $user->name }}</div>
-                <div class="rail-user-sub">{{ $isAdmin ? 'Admin / Toolman' : 'Kelas '.$user->kelas }}</div>
+                <div class="rail-user-sub">{{ $isStaff ? $user->role->label() : 'Kelas '.$user->kelas }}</div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn btn-ghost btn-block"><x-icon name="logout" :size="18" /> Keluar</button>

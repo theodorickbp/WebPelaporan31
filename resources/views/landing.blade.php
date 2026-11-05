@@ -14,7 +14,7 @@
     <section class="hero">
         <div>
             <h1>Ada yang rusak di kelas? Foto dan laporkan sekarang.</h1>
-            <p class="hero-lead">SI-PASAR menghubungkan siswa dengan Toolman. Kirim foto bukti dari HP, lalu pantau perbaikannya sampai selesai.</p>
+            <p class="hero-lead">SI-PASAR menghubungkan siswa dengan Admin dan Toolman. Kirim foto bukti dari HP, lalu pantau perbaikannya sampai selesai.</p>
             <div class="hero-actions">
                 <a href="{{ route('register') }}" class="btn btn-sun btn-lg"><x-icon name="camera" :size="22" /> Buat laporan</a>
                 <a href="{{ route('login') }}" class="btn btn-soft btn-lg">Sudah punya akun</a>
@@ -65,8 +65,8 @@
                 </li>
                 <li>
                     <div>
-                        <h3>Kirim ke Toolman</h3>
-                        <p>Pilih jenis masalah, tulis lokasinya, lalu kirim. Toolman akan menerima atau menolak laporanmu.</p>
+                        <h3>Kirim laporan</h3>
+                        <p>Pilih jenis masalah, tulis lokasinya, lalu kirim. Admin akan memeriksa laporanmu lalu menugaskan Toolman untuk mengerjakannya.</p>
                     </div>
                 </li>
                 <li>

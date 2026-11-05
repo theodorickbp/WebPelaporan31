@@ -20,6 +20,12 @@ class HomeController extends Controller
     /** Titik masuk setelah login: arahkan sesuai role. */
     public function dashboard(Request $request): RedirectResponse
     {
-        return redirect()->route($request->user()->isAdmin() ? 'admin.home' : 'student.home');
+        $user = $request->user();
+
+        return redirect()->route(match (true) {
+            $user->isAdmin() => 'admin.home',
+            $user->isToolman() => 'toolman.home',
+            default => 'student.home',
+        });
     }
 }

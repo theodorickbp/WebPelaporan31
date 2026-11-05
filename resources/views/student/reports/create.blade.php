@@ -11,9 +11,16 @@
     <form method="POST" action="{{ route('student.reports.store') }}" enctype="multipart/form-data" class="stack-lg" data-once>
         @csrf
 
+        @if ($remaining <= 0)
+            <div class="callout callout-bad"><strong>Batas harian tercapai</strong><p>Kamu sudah membuat {{ $dailyMax }} laporan hari ini. Coba lagi besok.</p></div>
+        @else
+            <p class="hint">Sisa jatah laporan hari ini: <strong>{{ $remaining }}</strong> dari {{ $dailyMax }}. Tanda <span class="req">*</span> wajib diisi.</p>
+        @endif
+        @error('limit') <div class="callout callout-bad"><strong>{{ $message }}</strong></div> @enderror
+
         {{-- 1. Foto bukti --}}
         <section class="uploader" data-uploader data-max="{{ config('sipasar.max_photos') }}" data-max-mb="{{ round(config('sipasar.max_photo_kb') / 1024) }}">
-            <h2 id="photo-title">Foto bukti</h2>
+            <h2 id="photo-title">Foto bukti <span class="req" aria-hidden="true">*</span></h2>
 
             <input type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/gif,image/bmp" data-real hidden>
             <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp" capture="environment" data-camera-input hidden>
@@ -56,7 +63,7 @@
 
         {{-- 2. Jenis masalah --}}
         <section class="stack">
-            <h2 id="cat-title">Masalahnya apa?</h2>
+            <h2 id="cat-title">Masalahnya apa? <span class="req" aria-hidden="true">*</span></h2>
             <div class="choices" role="radiogroup" aria-labelledby="cat-title">
                 @foreach ($categories as $cat)
                     <label class="choice">
@@ -71,20 +78,20 @@
         {{-- 3. Detail --}}
         <section class="stack">
             <div class="field">
-                <label for="title">Judul singkat</label>
+                <label for="title">Judul singkat <span class="req" aria-hidden="true">*</span></label>
                 <input id="title" name="title" type="text" class="input @error('title') is-invalid @enderror" value="{{ old('title') }}" required minlength="5" maxlength="120" placeholder="Contoh: Proyektor tidak menyala">
                 @error('title') <p class="field-error">{{ $message }}</p> @enderror
             </div>
 
             <div class="field">
-                <label for="location">Lokasi</label>
+                <label for="location">Lokasi <span class="req" aria-hidden="true">*</span></label>
                 <input id="location" name="location" type="text" class="input @error('location') is-invalid @enderror" value="{{ old('location') }}" required maxlength="120" placeholder="Contoh: Lab RPL 2, meja 5">
                 @error('location') <p class="field-error">{{ $message }}</p> @enderror
             </div>
 
             <div class="field">
                 <label for="description">Keterangan <span class="muted">(boleh dikosongkan)</span></label>
-                <textarea id="description" name="description" class="textarea @error('description') is-invalid @enderror" maxlength="2000" placeholder="Sejak kapan rusak, apa yang terjadi, dan hal lain yang perlu Toolman tahu.">{{ old('description') }}</textarea>
+                <textarea id="description" name="description" class="textarea @error('description') is-invalid @enderror" maxlength="2000" placeholder="Sejak kapan rusak, apa yang terjadi, dan hal lain yang perlu diketahui Admin dan Toolman.">{{ old('description') }}</textarea>
                 @error('description') <p class="field-error">{{ $message }}</p> @enderror
             </div>
         </section>

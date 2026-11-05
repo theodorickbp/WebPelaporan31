@@ -8,8 +8,10 @@
     @php
         $tabs = [
             ['key' => 'submitted', 'label' => 'Menunggu ditinjau'],
-            ['key' => 'pending', 'label' => 'Pending'],
-            ['key' => 'in_repair', 'label' => 'Perbaikan'],
+            ['key' => 'waiting', 'label' => 'Menunggu antrean'],
+            ['key' => 'pending', 'label' => 'Disetujui'],
+            ['key' => 'in_repair', 'label' => 'Dikerjakan'],
+            ['key' => 'review', 'label' => 'Diperiksa'],
             ['key' => 'done', 'label' => 'Selesai'],
             ['key' => 'declined', 'label' => 'Ditolak'],
             ['key' => 'all', 'label' => 'Semua'],
@@ -31,7 +33,7 @@
         <input type="hidden" name="status" value="{{ $status }}">
         <div class="field">
             <label for="q">Cari</label>
-            <input id="q" name="q" type="search" class="input" value="{{ $q }}" placeholder="Kode, judul, lokasi, atau nama siswa">
+            <input id="q" name="q" type="search" class="input" value="{{ $q }}" placeholder="Kode, judul, lokasi, nama siswa, atau Toolman">
         </div>
         <div class="field">
             <label for="category">Jenis masalah</label>

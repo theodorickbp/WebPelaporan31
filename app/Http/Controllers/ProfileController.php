@@ -21,7 +21,7 @@ class ProfileController extends Controller
         return view('profile.edit', ['user' => $request->user(), 'devices' => $devices]);
     }
 
-    /** Siswa dan Admin/Toolman sama-sama boleh mengubah profil sendiri. */
+    /** Siswa, Toolman, dan Admin sama-sama boleh mengubah profil sendiri. */
     public function update(Request $request): RedirectResponse
     {
         $user = $request->user();
@@ -32,7 +32,7 @@ class ProfileController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
         ];
 
-        if (! $user->isAdmin()) {
+        if ($user->isStudent()) {
             $rules['kelas'] = ['required', 'string', 'max:30'];
         }
 

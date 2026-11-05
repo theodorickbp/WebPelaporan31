@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
 
-/** Toolman menyetujui atau menolak pengajuan akun Siswa/Guru. */
+/** Admin menyetujui atau menolak pengajuan akun siswa. */
 class AccountController extends Controller
 {
     public function index(Request $request): View
@@ -20,7 +20,7 @@ class AccountController extends Controller
         $status = $request->query('status', AccountStatus::Pending->value);
         $q = trim((string) $request->query('q', ''));
 
-        $base = User::query()->where('role', '!=', UserRole::Admin->value);
+        $base = User::query()->where('role', UserRole::Student->value);
 
         $counts = (clone $base)
             ->selectRaw('account_status, count(*) as total')
@@ -58,7 +58,7 @@ class AccountController extends Controller
 
     public function approve(User $user): RedirectResponse
     {
-        abort_if($user->isAdmin(), 404);
+        abort_unless($user->isStudent(), 404);
 
         if ($user->account_status === AccountStatus::Approved) {
             return back()->with('toast', 'Akun ini sudah disetujui.');
@@ -77,7 +77,7 @@ class AccountController extends Controller
 
     public function reject(Request $request, User $user): RedirectResponse
     {
-        abort_if($user->isAdmin(), 404);
+        abort_unless($user->isStudent(), 404);
 
         if ($user->account_status !== AccountStatus::Pending) {
             return back()->with('toast', 'Hanya pengajuan yang masih menunggu yang bisa ditolak.');

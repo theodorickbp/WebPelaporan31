@@ -34,9 +34,12 @@ class NotificationController extends Controller
             return redirect()->route('notifications.index');
         }
 
-        return redirect()->route(
-            $request->user()->isAdmin() ? 'admin.reports.show' : 'student.reports.show',
-            $code
-        );
+        $user = $request->user();
+
+        return redirect()->route(match (true) {
+            $user->isAdmin() => 'admin.reports.show',
+            $user->isToolman() => 'toolman.reports.show',
+            default => 'student.reports.show',
+        }, $code);
     }
 }

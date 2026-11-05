@@ -22,28 +22,38 @@ class AdminWorkflowTest extends TestCase
         ]);
     }
 
-    public function test_admin_walks_a_report_through_the_full_flow_and_student_is_notified(): void
+    public function test_report_walks_the_full_flow_admin_toolman_admin_and_student_is_notified(): void
     {
         Notification::fake();
 
         $admin = User::factory()->admin()->create();
+        $toolman = User::factory()->toolman()->create();
         $student = User::factory()->create();
         $report = Report::factory()->create(['user_id' => $student->id]);
 
         $this->move($admin, $report, ReportStatus::Pending)->assertSessionHasNoErrors();
         $this->assertSame(ReportStatus::Pending, $report->fresh()->status);
 
-        $this->move($admin, $report, ReportStatus::InRepair)->assertSessionHasNoErrors();
+        $this->actingAs($admin)->post(route('admin.reports.assign', $report), ['toolman_id' => $toolman->id])
+            ->assertSessionHasNoErrors();
         $this->assertSame(ReportStatus::InRepair, $report->fresh()->status);
+        $this->assertSame($toolman->id, $report->fresh()->toolman_id);
 
-        $this->move($admin, $report, ReportStatus::Done, 'Kabel sudah diganti.')->assertSessionHasNoErrors();
+        $this->actingAs($toolman)->post(route('toolman.reports.submit', $report), ['note' => 'Kabel sudah diganti.'])
+            ->assertSessionHasNoErrors();
+        $this->assertSame(ReportStatus::Review, $report->fresh()->status);
+        $this->assertSame('Kabel sudah diganti.', $report->fresh()->work_note);
 
-        $fresh = $report->fresh();
+        $this->move($admin, $report, ReportStatus::Done, 'Sudah beres, silakan dicek.')->assertSessionHasNoErrors();
+
+        $fresh = $report->fresh()->load('logs');
         $this->assertSame(ReportStatus::Done, $fresh->status);
         $this->assertNotNull($fresh->resolved_at);
-        $this->assertSame('Kabel sudah diganti.', $fresh->admin_note);
-        $this->assertCount(3, $fresh->logs);
+        $this->assertSame('Sudah beres, silakan dicek.', $fresh->admin_note);
+        $this->assertCount(4, $fresh->logs); // pending, in_repair, review, done (factory tidak membuat log awal)
+        $this->assertSame($toolman->id, $fresh->logs->firstWhere('to_status', ReportStatus::Done)->toolman_id);
 
+        // Siswa diberi tahu saat disetujui, ditugaskan, dan selesai; hasil internal Toolman tidak dikirim ke siswa.
         Notification::assertSentToTimes($student, ReportStatusChanged::class, 3);
     }
 
@@ -65,7 +75,7 @@ class AdminWorkflowTest extends TestCase
         $admin = User::factory()->admin()->create();
         $report = Report::factory()->create();
 
-        $this->move($admin, $report, ReportStatus::Done)->assertSessionHasErrors('status');
+        $this->move($admin, $report, ReportStatus::Done, 'Catatan.')->assertSessionHasErrors('status');
         $this->move($admin, $report, ReportStatus::InRepair)->assertSessionHasErrors('status');
         $this->assertSame(ReportStatus::Submitted, $report->fresh()->status);
 

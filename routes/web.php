@@ -9,6 +9,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student;
+use App\Http\Controllers\Toolman;
 use App\Http\Middleware\EnsureRole;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'landing'])->name('home');
 
 /*
-| Tamu. Hanya siswa yang bisa mendaftar; akun Admin/Toolman dibuat lewat seeder.
+| Tamu. Hanya siswa yang bisa mendaftar; akun Admin/Toolman dibuat lewat migrasi/seeder.
 */
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [AuthController::class, 'showLogin'])->name('login');
@@ -32,7 +33,7 @@ Route::middleware('guest')->group(function () {
 });
 
 /*
-| Semua yang sudah login (siswa & admin). AuthenticateSession membuat
+| Semua yang sudah login (siswa, Toolman & Admin). AuthenticateSession membuat
 | "keluarkan perangkat lain" dan ganti kata sandi berlaku di semua perangkat.
 */
 Route::middleware(['auth', AuthenticateSession::class])->group(function () {
@@ -67,7 +68,7 @@ Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':stude
     });
 
 /*
-| Area Admin/Toolman.
+| Area Admin.
 */
 Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':admin'])
     ->prefix('admin')->name('admin.')->group(function () {
@@ -79,4 +80,16 @@ Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':admin
         Route::get('/laporan', [Admin\ReportController::class, 'index'])->name('reports.index');
         Route::get('/laporan/{report}', [Admin\ReportController::class, 'show'])->name('reports.show');
         Route::post('/laporan/{report}/status', [Admin\ReportController::class, 'transition'])->name('reports.transition');
+        Route::post('/laporan/{report}/tugaskan', [Admin\ReportController::class, 'assign'])->name('reports.assign');
+    });
+
+/*
+| Area Toolman: mengerjakan laporan yang ditugaskan Admin lalu mengirim hasilnya.
+*/
+Route::middleware(['auth', AuthenticateSession::class, EnsureRole::class.':toolman'])
+    ->prefix('toolman')->name('toolman.')->group(function () {
+        Route::get('/', [Toolman\ReportController::class, 'home'])->name('home');
+        Route::get('/laporan', [Toolman\ReportController::class, 'index'])->name('reports.index');
+        Route::get('/laporan/{report}', [Toolman\ReportController::class, 'show'])->name('reports.show');
+        Route::post('/laporan/{report}/hasil', [Toolman\ReportController::class, 'submit'])->name('reports.submit');
     });

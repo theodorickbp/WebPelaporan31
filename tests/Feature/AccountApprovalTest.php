@@ -96,7 +96,7 @@ class AccountApprovalTest extends TestCase
 
         $this->from('/masuk')
             ->post('/masuk', ['email' => 'tolak@example.test', 'password' => 'password'])
-            ->assertSessionHasErrors(['email' => 'Pengajuan akunmu ditolak. Alasan: Data tidak cocok. Hubungi Toolman kalau ini keliru.']);
+            ->assertSessionHasErrors(['email' => 'Pengajuan akunmu ditolak. Alasan: Data tidak cocok. Hubungi Admin kalau ini keliru.']);
 
         $this->assertGuest();
     }

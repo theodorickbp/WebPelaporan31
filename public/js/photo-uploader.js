@@ -57,6 +57,8 @@
             const image = document.createElement('img');
             image.src = it.url;
             image.alt = `Foto bukti ${i + 1}`;
+            image.addEventListener('load', () => image.setAttribute('data-loaded', ''), { once: true });
+            image.addEventListener('error', () => image.setAttribute('data-loaded', ''), { once: true });
             open.append(image);
 
             const rm = document.createElement('button');

@@ -6,7 +6,7 @@
                 data-zoom-group="report-{{ $report->id }}"
                 data-zoom-alt="Foto bukti {{ $i + 1 }} untuk {{ $report->title }}"
                 aria-label="Buka dan perbesar foto bukti {{ $i + 1 }}">
-            <img src="{{ route('photos.show', $photo) }}" alt="Foto bukti {{ $i + 1 }}" loading="lazy">
+            <img src="{{ route('photos.thumb', $photo) }}" alt="Foto bukti {{ $i + 1 }}" decoding="async" width="480" height="360">
             <span class="gallery-zoom" aria-hidden="true"><x-icon name="zoom-in" :size="18" /></span>
         </button>
     @endforeach

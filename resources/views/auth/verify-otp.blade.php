@@ -29,7 +29,7 @@
             <form method="POST" action="{{ route('password.update') }}" class="stack" data-once>
                 @csrf
                 <div class="field">
-                    <label for="otp">Kode OTP</label>
+                    <label for="otp">Kode OTP <span class="req" aria-hidden="true">*</span></label>
                     <input id="otp" name="otp" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code"
                            maxlength="{{ config('sipasar.otp.length') }}" class="input @error('otp') is-invalid @enderror"
                            style="letter-spacing:.35em;font-weight:700;text-align:center;font-size:1.25rem" required autofocus>
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="password">Kata sandi baru</label>
+                    <label for="password">Kata sandi baru <span class="req" aria-hidden="true">*</span></label>
                     <div class="input-group">
                         <input id="password" name="password" type="password" class="input @error('password') is-invalid @enderror" required minlength="8" autocomplete="new-password">
                         <button type="button" data-toggle-password="password" aria-pressed="false">Tampilkan</button>
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="password_confirmation">Ulangi kata sandi baru</label>
+                    <label for="password_confirmation">Ulangi kata sandi baru <span class="req" aria-hidden="true">*</span></label>
                     <input id="password_confirmation" name="password_confirmation" type="password" class="input" required autocomplete="new-password">
                 </div>
 

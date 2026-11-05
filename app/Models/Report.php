@@ -18,7 +18,7 @@ class Report extends Model
 
     protected $fillable = [
         'code', 'user_id', 'category', 'title', 'location',
-        'description', 'status', 'admin_note', 'resolved_at',
+        'description', 'status', 'admin_note', 'resolved_at', 'toolman_id', 'work_note',
     ];
 
     protected function casts(): array
@@ -55,6 +55,12 @@ class Report extends Model
         return $this->belongsTo(User::class);
     }
 
+    /** Toolman yang ditugaskan Admin menangani laporan ini. */
+    public function toolman(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'toolman_id');
+    }
+
     public function photos(): HasMany
     {
         return $this->hasMany(ReportPhoto::class)->orderBy('sort')->orderBy('id');
@@ -77,7 +83,7 @@ class Report extends Model
             && in_array($this->status, [ReportStatus::Done, ReportStatus::Declined], true);
     }
 
-    /** Laporan yang belum ditinjau (masih "submitted") dan sudah melewati ambang waktu di config. Dipakai untuk pengingat visual ke Toolman. */
+    /** Laporan yang belum ditinjau (masih "submitted") dan sudah melewati ambang waktu di config. Dipakai untuk pengingat visual ke Admin. */
     public function isOverdue(): bool
     {
         return $this->status === ReportStatus::Submitted
@@ -97,7 +103,8 @@ class Report extends Model
             $q->where('code', 'like', $like)
                 ->orWhere('title', 'like', $like)
                 ->orWhere('location', 'like', $like)
-                ->orWhereHas('user', fn (Builder $u) => $u->where('name', 'like', $like));
+                ->orWhereHas('user', fn (Builder $u) => $u->where('name', 'like', $like))
+                ->orWhereHas('toolman', fn (Builder $u) => $u->where('name', 'like', $like));
         });
     }
 }

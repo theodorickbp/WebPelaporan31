@@ -24,44 +24,44 @@
             <x-brand />
             <div>
                 <h1>Buat akun siswa</h1>
-                <p class="muted" style="margin-top:6px">Isi data dengan benar. Akun baru hanya bisa digunakan setelah disetujui Admin/Toolman.</p>
+                <p class="muted" style="margin-top:6px">Isi data dengan benar. Akun baru hanya bisa digunakan setelah disetujui Admin.</p>
             </div>
 
             <form method="POST" action="{{ route('register.store') }}" class="stack">
                 @csrf
                 <div class="field">
-                    <label for="name">Nama lengkap</label>
+                    <label for="name">Nama lengkap <span class="req" aria-hidden="true">*</span></label>
                     <input id="name" name="name" type="text" class="input @error('name') is-invalid @enderror" value="{{ old('name') }}" required autocomplete="name" maxlength="80">
                     @error('name') <p class="field-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="field">
-                    <label for="kelas">Kelas</label>
+                    <label for="kelas">Kelas <span class="req" aria-hidden="true">*</span></label>
                     <input id="kelas" name="kelas" type="text" class="input @error('kelas') is-invalid @enderror" value="{{ old('kelas') }}" required maxlength="30" placeholder="Contoh: XI RPL 1">
                     @error('kelas') <p class="field-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="field">
-                    <label for="nomor_induk">NISN</label>
+                    <label for="nomor_induk">NISN <span class="req" aria-hidden="true">*</span></label>
                     <input id="nomor_induk" name="nomor_induk" type="text" class="input @error('nomor_induk') is-invalid @enderror" value="{{ old('nomor_induk') }}" required inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" placeholder="10 angka">
                     <p class="hint">Masukkan 10 angka sesuai data sekolah.</p>
                     @error('nomor_induk') <p class="field-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="field">
-                    <label for="phone">Nomor telepon</label>
+                    <label for="phone">Nomor telepon <span class="req" aria-hidden="true">*</span></label>
                     <input id="phone" name="phone" type="tel" class="input @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required autocomplete="tel" inputmode="tel" maxlength="20" placeholder="08xxxxxxxxxx">
                     @error('phone') <p class="field-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="field">
-                    <label for="email">Email</label>
+                    <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
                     <input id="email" name="email" type="email" class="input @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" inputmode="email">
                     @error('email') <p class="field-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="field">
-                    <label for="password">Kata sandi</label>
+                    <label for="password">Kata sandi <span class="req" aria-hidden="true">*</span></label>
                     <div class="input-group">
                         <input id="password" name="password" type="password" class="input @error('password') is-invalid @enderror" required minlength="8" autocomplete="new-password">
                         <button type="button" data-toggle-password="password" aria-pressed="false">Tampilkan</button>
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="password_confirmation">Ulangi kata sandi</label>
+                    <label for="password_confirmation">Ulangi kata sandi <span class="req" aria-hidden="true">*</span></label>
                     <input id="password_confirmation" name="password_confirmation" type="password" class="input" required autocomplete="new-password">
                 </div>
 

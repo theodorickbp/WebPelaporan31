@@ -18,7 +18,7 @@
 
         @if ($report->admin_note)
             <div class="callout {{ $report->status === \App\Enums\ReportStatus::Declined ? 'callout-bad' : ($report->status === \App\Enums\ReportStatus::Done ? 'callout-good' : '') }}">
-                <strong>Catatan Toolman</strong>
+                <strong>Catatan Admin</strong>
                 <p>{{ $report->admin_note }}</p>
             </div>
         @endif
@@ -54,7 +54,7 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger-soft btn-block"><x-icon name="trash" :size="18" /> Batalkan laporan</button>
-                <p class="hint" style="margin-top:8px">Bisa dibatalkan selama Toolman belum meninjau laporan ini.</p>
+                <p class="hint" style="margin-top:8px">Bisa dibatalkan selama Admin belum meninjau laporan ini.</p>
             </form>
         @endcan
     </div>

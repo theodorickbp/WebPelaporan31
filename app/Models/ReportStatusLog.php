@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ReportStatusLog extends Model
 {
-    protected $fillable = ['user_id', 'from_status', 'to_status', 'note'];
+    protected $fillable = ['user_id', 'toolman_id', 'from_status', 'to_status', 'note'];
 
     protected function casts(): array
     {
@@ -26,5 +26,11 @@ class ReportStatusLog extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /** Toolman yang menangani laporan saat entri riwayat ini dibuat. */
+    public function toolman(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'toolman_id');
     }
 }

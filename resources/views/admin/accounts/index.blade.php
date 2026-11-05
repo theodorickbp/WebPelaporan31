@@ -5,7 +5,7 @@
 @section('content')
     <div class="page-head">
         <h1>Pengajuan Akun</h1>
-        <p class="muted">Periksa data pendaftar (cocokkan NISN/NIP dan nama), lalu setujui atau tolak.</p>
+        <p class="muted">Periksa data pendaftar (cocokkan NISN dan nama), lalu setujui atau tolak.</p>
     </div>
 
     @php
@@ -37,7 +37,7 @@
         <input type="hidden" name="status" value="{{ $status }}">
         <div class="field">
             <label for="q">Cari</label>
-            <input id="q" name="q" type="search" class="input" value="{{ $q }}" placeholder="Nama, email, atau NISN/NIP">
+            <input id="q" name="q" type="search" class="input" value="{{ $q }}" placeholder="Nama, email, atau NISN">
         </div>
         <button type="submit" class="btn btn-soft"><x-icon name="search" :size="18" /> Cari</button>
     </form>

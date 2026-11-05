@@ -149,6 +149,7 @@ p { margin: 0; }
 .chip-pending { background: var(--amber-l); color: var(--amber); }
 .chip-repair { background: var(--sky); color: var(--blue-d); }
 .chip-done { background: var(--mint-l); color: #0a7554; }
+.chip-review { background: #efe7ff; color: #5b2fb3; }
 .chip-bad { background: var(--coral-l); color: #b02a30; }
 
 /* ---------- Tiket laporan ---------- */
@@ -221,6 +222,7 @@ p { margin: 0; }
     background: var(--sky); cursor: zoom-in; aspect-ratio: 4 / 3; min-height: 0;
 }
 .gallery-1 .gallery-item { aspect-ratio: 16 / 10; }
+.gallery-3 { aspect-ratio: 3 / 2; }
 .gallery-3 .gallery-item { aspect-ratio: auto; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-zoom {
@@ -251,6 +253,7 @@ p { margin: 0; }
 .tone-pending .timeline-dot, .note-dot.tone-pending { background: var(--amber-l); color: var(--amber); }
 .tone-repair .timeline-dot, .note-dot.tone-repair { background: var(--sky); color: var(--blue-d); }
 .tone-done .timeline-dot, .note-dot.tone-done { background: var(--mint-l); color: #0a7554; }
+.tone-review .timeline-dot, .note-dot.tone-review { background: #efe7ff; color: #5b2fb3; }
 .tone-bad .timeline-dot, .note-dot.tone-bad { background: var(--coral-l); color: #b02a30; }
 .timeline-body { display: grid; gap: 2px; font-size: .9375rem; }
 .timeline-body time { color: var(--ink-2); font-size: .8125rem; }
@@ -513,10 +516,9 @@ p { margin: 0; }
 
 /* ---------- Skeleton loading (thumbnail & galeri sedang memuat) ---------- */
 @keyframes skeleton-sheen { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-.ticket-thumb img, .gallery-item img, .thumb-open img {
-    opacity: 0; transition: opacity .25s ease;
-}
-.ticket-thumb img[data-loaded], .gallery-item img[data-loaded], .thumb-open img[data-loaded] { opacity: 1; }
+/* Gambar SELALU tampil begitu datang dari jaringan (tidak lagi disembunyikan lewat opacity/JS).
+   Shimmer hanya latar di belakang gambar, jadi kalau JS gagal pun foto tetap kelihatan. */
+.ticket-thumb img, .gallery-item img, .thumb-open img { opacity: 1; }
 .ticket-thumb:has(img:not([data-loaded])),
 .gallery-item:has(img:not([data-loaded])),
 .thumb-open:has(img:not([data-loaded])) {
@@ -573,3 +575,12 @@ p { margin: 0; }
 @media (min-width: 900px) {
     .account-actions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
 }
+
+/* ---------- Tanda wajib diisi & info Toolman ---------- */
+.req { color: #d92d20; font-weight: 700; margin-left: 2px; }
+.timeline-toolman, .timeline-actor { margin: 2px 0 0; font-size: .8125rem; color: var(--ink-2); display: flex; align-items: center; gap: 5px; }
+.timeline-toolman b { color: var(--ink); }
+.capacity { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .875rem; color: var(--ink-2); }
+.capacity b { color: var(--ink); }
+.capacity .is-full { color: #b02a30; }
+.stats-auto { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important; }

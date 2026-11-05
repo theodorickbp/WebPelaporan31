@@ -4,7 +4,7 @@
     <div class="ticket-main">
         <div class="ticket-thumb">
             @if ($cover)
-                <img src="{{ route('photos.thumb', $cover) }}" alt="" loading="lazy" width="64" height="64">
+                <img src="{{ route('photos.thumb', $cover) }}" alt="" decoding="async" width="64" height="64">
             @else
                 <x-icon :name="$report->category->icon()" :size="26" />
             @endif
@@ -17,6 +17,9 @@
             </div>
             @if ($showUser)
                 <div class="ticket-user">oleh {{ $report->user->name }}, {{ $report->user->kelas }}</div>
+            @endif
+            @if ($report->toolman && ! auth()->user()?->isToolman())
+                <div class="ticket-user"><x-icon name="wrench" :size="13" /> Ditangani: {{ $report->toolman->name }}</div>
             @endif
             @if ($report->isOverdue())
                 <div class="ticket-overdue"><x-icon name="clock" :size="14" /> Menunggu lama, segera ditinjau</div>

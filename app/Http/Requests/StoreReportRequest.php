@@ -10,7 +10,7 @@ class StoreReportRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user() !== null && ! $this->user()->isAdmin();
+        return $this->user() !== null && $this->user()->isStudent();
     }
 
     public function rules(): array

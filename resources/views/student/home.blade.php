@@ -7,7 +7,7 @@
         <section class="hero-cta">
             <div>
                 <h1>Halo, {{ \Illuminate\Support\Str::before(auth()->user()->name, ' ') }}</h1>
-                <p style="margin-top:6px">Ada perangkat kelas yang bermasalah? Foto dulu, sisanya biar Toolman.</p>
+                <p style="margin-top:6px">Ada perangkat kelas yang bermasalah? Foto dulu, sisanya biar kami tangani.</p>
             </div>
             <a href="{{ route('student.reports.create') }}" class="btn btn-sun btn-lg"><x-icon name="camera" :size="22" /> Foto dan laporkan</a>
         </section>

@@ -13,20 +13,40 @@
             </section>
         @endif
 
-        <div class="stats">
+        <div class="stats stats-auto">
             <a href="{{ route('admin.reports.index', ['status' => 'submitted']) }}" class="stat stat-hot">
                 <strong>{{ $counts['submitted'] ?? 0 }}</strong><span>Menunggu ditinjau</span>
             </a>
             <a href="{{ route('admin.reports.index', ['status' => 'pending']) }}" class="stat">
-                <strong>{{ $counts['pending'] ?? 0 }}</strong><span>Pending</span>
+                <strong>{{ $counts['pending'] ?? 0 }}</strong><span>Disetujui</span>
             </a>
             <a href="{{ route('admin.reports.index', ['status' => 'in_repair']) }}" class="stat">
-                <strong>{{ $counts['in_repair'] ?? 0 }}</strong><span>Perbaikan</span>
+                <strong>{{ $counts['in_repair'] ?? 0 }}</strong><span>Dikerjakan</span>
+            </a>
+            <a href="{{ route('admin.reports.index', ['status' => 'review']) }}" class="stat">
+                <strong>{{ $counts['review'] ?? 0 }}</strong><span>Perlu diperiksa</span>
             </a>
             <a href="{{ route('admin.reports.index', ['status' => 'done']) }}" class="stat">
                 <strong>{{ $counts['done'] ?? 0 }}</strong><span>Selesai</span>
             </a>
         </div>
+
+        <p class="capacity">
+            <span>Antrean Admin: <b @class(['is-full' => ($counts['submitted'] ?? 0) >= $limits['max_queue']])>{{ $counts['submitted'] ?? 0 }}/{{ $limits['max_queue'] }}</b></span>
+            <span>Menunggu antrean: <b>{{ $counts['waiting'] ?? 0 }}</b></span>
+            <span>Disetujui sekaligus: <b @class(['is-full' => $limits['active'] >= $limits['max_active']])>{{ $limits['active'] }}/{{ $limits['max_active'] }}</b></span>
+        </p>
+
+        @if ($review->isNotEmpty())
+            <section class="stack">
+                <h2>Hasil pengerjaan perlu diperiksa</h2>
+                <div class="ticket-list">
+                    @foreach ($review as $report)
+                        <x-report-ticket :report="$report" :href="route('admin.reports.show', $report)" :show-user="true" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
 
         <section class="stack">
             <div class="row row-between">
@@ -44,7 +64,7 @@
 
         @if ($working->isNotEmpty())
             <section class="stack">
-                <h2>Sedang dikerjakan</h2>
+                <h2>Disetujui &amp; sedang dikerjakan</h2>
                 <div class="ticket-list">
                     @foreach ($working as $report)
                         <x-report-ticket :report="$report" :href="route('admin.reports.show', $report)" :show-user="true" />

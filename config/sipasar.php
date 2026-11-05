@@ -24,7 +24,19 @@ return [
         'max_attempts' => 5,
     ],
 
-    // Akun Admin/Toolman tunggal, dibuat oleh AdminSeeder (tidak ada halaman daftar untuk admin).
+    // Batas sistem.
+    'max_approved_at_once' => 15,     // laporan yang boleh sedang diproses (disetujui s/d belum selesai) sekaligus
+    'max_queue' => 50,                // laporan yang boleh masuk antrean Admin; sisanya menunggu (status "waiting")
+    'max_reports_per_day' => 5,       // laporan per akun siswa per hari
+
+    // 3 akun Toolman (dibuat oleh migrasi/ToolmanSeeder).
+    'toolmen' => [
+        ['name' => 'Toolman A', 'email' => 'toolmana@gmail.com', 'password' => 'toolman123'],
+        ['name' => 'Toolman B', 'email' => 'toolmanb@gmail.com', 'password' => 'toolman231'],
+        ['name' => 'Toolman C', 'email' => 'toolmanc@gmail.com', 'password' => 'toolman312'],
+    ],
+
+    // Akun Admin tunggal, dibuat oleh AdminSeeder (tidak ada halaman daftar untuk admin).
     'admin' => [
         'name' => env('ADMIN_NAME', 'Toolman'),
         'email' => env('ADMIN_EMAIL', 'toolman@sipasar.test'),

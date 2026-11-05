@@ -61,7 +61,7 @@ class AuthController extends Controller
                 ? ' Alasan: '.rtrim((string) $user->rejection_reason, '.').'.'
                 : '';
             $message = $user->account_status === AccountStatus::Rejected
-                ? 'Pengajuan akunmu ditolak.'.$reason.' Hubungi Toolman kalau ini keliru.'
+                ? 'Pengajuan akunmu ditolak.'.$reason.' Hubungi Admin kalau ini keliru.'
                 : 'Akunmu masih menunggu persetujuan Admin. Kamu bisa masuk setelah disetujui.';
 
             throw ValidationException::withMessages(['email' => $message]);
@@ -115,7 +115,7 @@ class AuthController extends Controller
             report($e); // Pengajuan tetap tersimpan meski notifikasi gagal.
         }
 
-        return redirect()->route('login')->with('status', 'Pendaftaran berhasil dikirim. Akunmu dapat digunakan setelah disetujui Admin/Toolman.');
+        return redirect()->route('login')->with('status', 'Pendaftaran berhasil dikirim. Akunmu dapat digunakan setelah disetujui Admin.');
     }
 
     public function logout(Request $request): RedirectResponse

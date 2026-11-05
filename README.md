@@ -8,8 +8,9 @@ dan siswa diberi tahu di setiap tahap.
 
 | Aktor | Bisa |
 |---|---|
-| **Siswa** | Mengajukan akun (harus disetujui Admin/Toolman sebelum bisa masuk), edit profil, ganti kata sandi, membuat laporan dengan foto (kamera / galeri / seret & lepas), memantau status, membatalkan laporan yang belum ditinjau, menerima notifikasi |
-| **Admin/Toolman** (hanya 1 akun) | Masuk, edit profil sendiri, melihat semua laporan (cari + filter), **terima atau tolak**, lalu menggerakkan status **Pending → Perbaikan → Selesai**, memberi catatan untuk siswa |
+| **Siswa** | Mengajukan akun (harus disetujui Admin sebelum bisa masuk), edit profil, ganti kata sandi, membuat laporan dengan foto (kamera / galeri / seret & lepas), memantau status, membatalkan laporan yang belum ditinjau, menerima notifikasi |
+| **Admin** (hanya 1 akun) | Menyetujui akun siswa, melihat semua laporan (cari + filter), **setujui/tolak** laporan (maks. 15 disetujui sekaligus), **memilih Toolman secara manual**, memeriksa hasil pengerjaan, lalu menyelesaikan laporan dan memberi informasi ke siswa |
+| **Toolman** (3 akun) | Hanya melihat laporan yang ditugaskan padanya, mengerjakan, lalu mengirim hasil pengerjaan ke Admin |
 
 - Admin **tidak bisa mendaftar**. Akun dibuat oleh `AdminSeeder` dari `.env`, dan model `User` menolak (`DomainException`) pembuatan admin kedua.
 - Role tidak pernah dibaca dari request, jadi pendaftaran selalu menghasilkan siswa.
@@ -42,7 +43,7 @@ Email opsional: isi `MAIL_*` lalu set `SIPASAR_MAIL_NOTIFICATIONS=true`.
 ## Persetujuan akun
 
 - Pendaftaran siswa menyimpan akun dengan status `pending`; pendaftar tidak otomatis login.
-- Admin/Toolman membuka menu **Akun**, lalu memilih Setujui atau Tolak. Pengajuan baru juga membuat notifikasi di dalam aplikasi untuk Admin.
+- Admin membuka menu **Akun**, lalu memilih Setujui atau Tolak. Pengajuan baru juga membuat notifikasi di dalam aplikasi untuk Admin.
 - Akun lama tetap berstatus `approved` melalui nilai default migrasi, sehingga akun yang sudah ada tidak terkunci.
 
 ## Pemasangan

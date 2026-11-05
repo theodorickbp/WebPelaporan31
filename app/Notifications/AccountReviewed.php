@@ -36,7 +36,7 @@ class AccountReviewed extends Notification
             ->greeting("Halo, {$notifiable->name}")
             ->line('Maaf, pengajuan akunmu belum bisa disetujui.')
             ->when(filled($this->reason), fn (MailMessage $m) => $m->line("Alasan: {$this->reason}"))
-            ->line('Hubungi Toolman di sekolah kalau ini keliru.');
+            ->line('Hubungi Admin di sekolah kalau ini keliru.');
     }
 
     public function toArray(object $notifiable): array

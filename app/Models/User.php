@@ -44,7 +44,7 @@ class User extends Authenticatable
                 ->exists();
 
             if ($otherAdminExists) {
-                throw new \DomainException('Hanya boleh ada satu akun Admin/Toolman.');
+                throw new \DomainException('Hanya boleh ada satu akun Admin.');
             }
         });
     }
@@ -54,9 +54,31 @@ class User extends Authenticatable
         return $this->role === UserRole::Admin;
     }
 
+    public function isToolman(): bool
+    {
+        return $this->role === UserRole::Toolman;
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role === UserRole::Student;
+    }
+
+    /** Admin atau Toolman (bukan siswa). */
+    public function isStaff(): bool
+    {
+        return $this->isAdmin() || $this->isToolman();
+    }
+
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
+    }
+
+    /** Laporan yang ditugaskan ke Toolman ini. */
+    public function assignedReports(): HasMany
+    {
+        return $this->hasMany(Report::class, 'toolman_id');
     }
 
     public function pending()
