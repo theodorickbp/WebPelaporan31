@@ -32,6 +32,7 @@
             @endif
 
             <form method="POST" action="{{ route('login.attempt') }}" class="stack">
+{{-- CARI: FORM LOGIN — input email/password dikirim ke route login.attempt untuk diperiksa AuthController. --}}
                 @csrf
                 <div class="field">
                     <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
@@ -52,6 +53,7 @@
                     </div>
                 </div>
 
+{{-- CARI: INGAT SAYA — checkbox remember meminta Laravel mengingat sesi login di perangkat ini. --}}
                 <label class="check"><input type="checkbox" name="remember" value="1"> Ingat saya di perangkat ini</label>
 
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Masuk</button>

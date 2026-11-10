@@ -32,6 +32,7 @@
         status.classList.toggle('is-error', error);
     };
 
+// CARI: SINKRONKAN FOTO KE FORM — memasukkan kumpulan file terpilih ke input photos[] agar ikut terkirim ke Laravel.
     const sync = () => {
         try {
             const dt = new DataTransfer();
@@ -42,6 +43,7 @@
         }
     };
 
+// CARI: PREVIEW / THUMBNAIL FOTO — membuat tampilan pratinjau gambar dan tombol hapus sebelum formulir dikirim.
     const render = () => {
         const nodes = items.map((it, i) => {
             const li = document.createElement('li');
@@ -78,6 +80,7 @@
         root.querySelectorAll('[data-action="camera"], [data-action="gallery"]').forEach((b) => { b.disabled = full; });
     };
 
+// CARI: HAPUS FOTO PILIHAN — menghapus satu foto dari daftar pratinjau dan memperbarui input form.
     const remove = (i) => {
         const [gone] = items.splice(i, 1);
         if (gone) URL.revokeObjectURL(gone.url);
@@ -94,6 +97,7 @@
         image.src = url;
     });
 
+// CARI: KOMPRESI FOTO — mengubah gambar ke JPEG, mengecilkan sisi terpanjang maksimal 1600px, dan menurunkan ukuran file.
     const compress = async (file) => {
         try {
             const image = await loadImage(file);
@@ -119,6 +123,7 @@
         }
     };
 
+// CARI: PROSES FOTO DARI KAMERA/GALERI/DRAG-DROP — cek format, batas jumlah, kompresi, batas ukuran, lalu masukkan ke preview.
     const addFiles = async (fileList) => {
         const files = Array.from(fileList || []).filter(
             (f) => /^image\/(jpeg|png|gif|bmp)$/i.test(f.type) || /\.(jpe?g|png|gif|bmp)$/i.test(f.name)
@@ -147,6 +152,7 @@
     };
 
     // ----- Kamera browser (laptop / desktop) -----
+// CARI: AKSES KAMERA PERANGKAT — meminta izin browser melalui getUserMedia; jika gagal, pengguna diarahkan memilih foto.
     const openCamera = async () => {
         if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             say('Kamera browser tidak tersedia. Jika perangkat memiliki kamera, gunakan kamera perangkat; jika tidak, pilih foto dari folder.', true);
@@ -171,6 +177,7 @@
         cam.querySelector('[data-action="snap"]').focus();
     };
 
+// CARI: MATIKAN KAMERA — menghentikan semua track kamera supaya kamera tidak terus aktif setelah modal ditutup.
     const closeCamera = () => {
         if (stream) stream.getTracks().forEach((t) => t.stop());
         stream = null;
@@ -179,6 +186,7 @@
         document.body.classList.remove('no-scroll');
     };
 
+// CARI: AMBIL FOTO DARI VIDEO KAMERA — menggambar frame video ke canvas lalu mengubahnya menjadi file JPEG.
     const snap = () => {
         if (!video.videoWidth || items.length >= MAX) return;
         const canvas = document.createElement('canvas');
@@ -193,6 +201,7 @@
     };
 
 
+// CARI: AKSI TOMBOL KAMERA DAN GALERI — menghubungkan tombol Ambil Foto, Pilih Galeri, Jepret, dan Selesai ke fungsi JavaScript.
     root.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
@@ -206,6 +215,7 @@
         }
     });
 
+// CARI: SAAT FILE FOTO DIPILIH — menerima perubahan input kamera/galeri dan mengirim file ke fungsi addFiles().
     [camInput, galInput].forEach((input) => {
         input.addEventListener('change', async () => {
             await addFiles(input.files);
@@ -222,10 +232,12 @@
         e.preventDefault();
         drop.classList.remove('is-over');
     }));
+// CARI: DRAG AND DROP FOTO — pengguna dapat menyeret file gambar ke area unggah.
     drop.addEventListener('drop', (e) => addFiles(e.dataTransfer && e.dataTransfer.files));
     // Cegah browser membuka foto bila terlepas di luar kotak.
     ['dragover', 'drop'].forEach((t) => window.addEventListener(t, (e) => e.preventDefault()));
 
+// CARI: TEMPEL FOTO DARI CLIPBOARD — menerima gambar yang ditempel dengan Ctrl+V jika browser menyediakan file gambar.
     document.addEventListener('paste', (e) => {
         const files = Array.from((e.clipboardData && e.clipboardData.files) || []);
         if (files.length) addFiles(files);
@@ -237,6 +249,7 @@
     window.addEventListener('pagehide', closeCamera, { once: true });
 
     // ----- Kirim form -----
+// CARI: CEK FOTO SEBELUM FORM DIKIRIM — mencegah pengiriman jika belum ada foto atau file belum tersinkron ke input utama.
     if (form) {
         form.addEventListener('submit', (e) => {
             if (!items.length || real.files.length !== items.length) {

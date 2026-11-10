@@ -20,6 +20,7 @@
             @if ($report->photos->isNotEmpty())
                 <section class="stack">
                     <h2>Foto bukti</h2>
+{{-- CARI: FOTO BUKTI DI HALAMAN ADMIN — menampilkan galeri foto yang diunggah siswa. --}}
                     <x-gallery :report="$report" />
                     <p class="hint">Ketuk foto untuk membuka. Cubit atau scroll untuk zoom.</p>
                 </section>
@@ -58,6 +59,7 @@
                 </div>
             @elseif ($report->status === $S::Pending)
                 {{-- Disetujui: pilih Toolman secara manual --}}
+{{-- CARI: FORM PILIH TOOLMAN — Admin memilih petugas secara manual lalu mengirimnya ke route admin.reports.assign. --}}
                 <form method="POST" action="{{ route('admin.reports.assign', $report) }}" class="panel stack" data-once>
                     @csrf
                     <h2>Tugaskan ke Toolman</h2>
@@ -80,6 +82,7 @@
                     <p>Menunggu Toolman mengirim hasil pengerjaan.</p>
                 </div>
             @elseif ($report->status->transitions())
+{{-- CARI: TOMBOL AKSI STATUS ADMIN — tombol setujui/tolak/selesaikan/minta revisi mengirim nilai status ke ReportController::transition(). --}}
                 <form method="POST" action="{{ route('admin.reports.transition', $report) }}" class="panel stack">
                     @csrf
                     <div class="field">

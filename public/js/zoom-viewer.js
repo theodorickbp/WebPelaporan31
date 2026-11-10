@@ -54,6 +54,7 @@
     };
 
     // Zoom dengan titik (clientX, clientY) tetap berada di bawah jari/kursor.
+// CARI: PERBESAR DAN GESER FOTO — mengatur skala zoom serta posisi gambar saat pengguna memperbesar/menggeser foto.
     const zoomAt = (next, clientX, clientY) => {
         const r = stage.getBoundingClientRect();
         const cx = clientX - (r.left + r.width / 2);

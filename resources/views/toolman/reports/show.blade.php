@@ -18,6 +18,7 @@
             @if ($report->photos->isNotEmpty())
                 <section class="stack">
                     <h2>Foto bukti</h2>
+{{-- CARI: FOTO BUKTI DI HALAMAN TOOLMAN — Toolman melihat foto kerusakan sebelum mengerjakan tugas. --}}
                     <x-gallery :report="$report" />
                     <p class="hint">Ketuk foto untuk membuka. Cubit atau scroll untuk zoom.</p>
                 </section>
@@ -43,6 +44,7 @@
 
         <aside class="split-side stack-lg">
             @if ($canWork)
+{{-- CARI: FORM HASIL PENGERJAAN TOOLMAN — catatan hasil perbaikan dikirim ke Toolman ReportController::submit(). --}}
                 <form method="POST" action="{{ route('toolman.reports.submit', $report) }}" class="panel stack" data-once>
                     @csrf
                     <h2>Kirim hasil pengerjaan</h2>

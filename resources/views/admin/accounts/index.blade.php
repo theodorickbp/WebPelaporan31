@@ -33,6 +33,7 @@
         @endforeach
     </nav>
 
+{{-- CARI: FILTER DAN PENCARIAN AKUN — filter status serta pencarian nama/email/NISN pada daftar pendaftar. --}}
     <form method="GET" action="{{ route('admin.accounts.index') }}" class="account-search section">
         <input type="hidden" name="status" value="{{ $status }}">
         <div class="field">
@@ -79,12 +80,14 @@
                 @if ($state === \App\Enums\AccountStatus::Pending)
                     <div class="account-actions">
                         <form method="POST" action="{{ route('admin.accounts.approve', $account) }}" data-once>
+{{-- CARI: TOMBOL ADMIN SETUJUI AKUN — mengirim POST ke route admin.accounts.approve; proses perubahan status ada di AccountController::approve(). --}}
                             @csrf
                             <button type="submit" class="btn btn-primary btn-block"><x-icon name="check" :size="18" /> Setujui</button>
                         </form>
                         <form method="POST" action="{{ route('admin.accounts.reject', $account) }}" class="reject-form"
                               data-confirm="Tolak pengajuan akun ini?" data-once>
                             @csrf
+{{-- CARI: ALASAN PENOLAKAN AKUN — alasan opsional dikirim ke AccountController::reject() dan disimpan pada rejection_reason. --}}
                             <input type="text" name="reason" class="input" maxlength="300" placeholder="Alasan penolakan (opsional)" aria-label="Alasan penolakan (opsional)">
                             <button type="submit" class="btn btn-danger-soft"><x-icon name="x" :size="18" /> Tolak</button>
                         </form>

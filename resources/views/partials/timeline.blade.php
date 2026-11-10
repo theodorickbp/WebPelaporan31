@@ -1,4 +1,5 @@
 <ol class="timeline">
+{{-- CARI: TIMELINE / RIWAYAT STATUS — menampilkan perubahan status, pelaku, waktu, Toolman, dan catatan laporan. --}}
     @foreach ($report->logs->reverse() as $log)
         <li class="timeline-item tone-{{ $log->to_status->tone() }}">
             <span class="timeline-dot"><x-icon :name="$log->to_status->icon()" :size="14" /></span>

@@ -1,6 +1,7 @@
 @props(['report'])
 <div class="gallery gallery-{{ min($report->photos->count(), 3) }}">
-    @foreach ($report->photos as $i => $photo)
+    {{-- CARI: GALERI FOTO LAPORAN — mengulang seluruh foto laporan, memakai route thumbnail dan URL foto asli untuk zoom viewer. --}}
+@foreach ($report->photos as $i => $photo)
         <button type="button" class="gallery-item"
                 data-zoom-src="{{ route('photos.show', $photo) }}"
                 data-zoom-group="report-{{ $report->id }}"

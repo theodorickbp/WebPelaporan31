@@ -9,6 +9,7 @@
     <title>@yield('title', 'SI-PASAR') - SI-PASAR</title>
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
     <link rel="icon" href="{{ asset('icon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('icon-192.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">

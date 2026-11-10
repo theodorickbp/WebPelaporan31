@@ -4,7 +4,7 @@
  * dan tetap tampil walau sinyal jelek. TIDAK menyimpan data laporan/notifikasi -
  * itu wajib selalu diambil dari server supaya statusnya selalu akurat.
  */
-const CACHE = 'sipasar-shell-v2';
+const CACHE = 'sipasar-shell-v4';
 const SHELL = [
     '/css/sipasar.min.css',
     '/js/app.min.js',

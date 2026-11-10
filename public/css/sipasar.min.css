@@ -183,7 +183,7 @@ p { margin: 0; }
 .ticket-list { display: grid; gap: 14px; }
 
 /* ---------- Jalur status ---------- */
-.track { display: grid; grid-template-columns: repeat(4, 1fr); list-style: none; margin: 0; padding: 0; }
+.track { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); list-style: none; margin: 0; padding: 0; }
 .track-step {
     position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px;
     font-size: .8125rem; color: var(--ink-2); text-align: center;
@@ -562,7 +562,7 @@ p { margin: 0; }
     .account-search { grid-template-columns: minmax(0, 1fr); }
     .account-search > .btn { width: 100%; }
     .reject-form { grid-template-columns: minmax(0, 1fr); }
-    .track { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .track { grid-auto-columns: minmax(0, 1fr); }
     .track-step { font-size: .7rem; overflow-wrap: anywhere; }
     .track-dot { width: 25px; height: 25px; }
     .ticket-main { gap: 9px; padding: 12px; }
@@ -584,3 +584,11 @@ p { margin: 0; }
 .capacity b { color: var(--ink); }
 .capacity .is-full { color: #b02a30; }
 .stats-auto { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important; }
+
+/* Dialog petunjuk pasang aplikasi */
+.pwa-help { border: 0; border-radius: var(--r-lg, 16px); padding: 20px; width: min(92vw, 400px); box-shadow: 0 20px 50px rgba(20, 33, 61, .3); color: var(--ink); }
+.pwa-help::backdrop { background: rgba(20, 33, 61, .45); }
+.pwa-help h2 { margin: 0 0 10px; font-size: 1.125rem; }
+.pwa-help p { margin: 0 0 12px; line-height: 1.45; }
+.pwa-help .btn { margin-top: 4px; }
+[data-pwa-open][hidden], [data-pwa-section][hidden] { display: none !important; }

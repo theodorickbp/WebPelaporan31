@@ -62,6 +62,7 @@
             <div class="rail-user">
                 <div class="rail-user-name">{{ $user->name }}</div>
                 <div class="rail-user-sub">{{ $isStaff ? $user->role->label() : 'Kelas '.$user->kelas }}</div>
+                <button type="button" class="btn btn-soft btn-block" data-pwa-open><x-icon name="download" :size="18" /> Pasang aplikasi</button>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn btn-ghost btn-block"><x-icon name="logout" :size="18" /> Keluar</button>
@@ -94,6 +95,15 @@
             @endif
             @yield('content')
         </main>
+
+        {{-- Petunjuk pasang aplikasi (dipakai tombol "Pasang aplikasi" kalau browser belum menyediakan prompt) --}}
+        <dialog id="pwa-help" class="pwa-help" aria-labelledby="pwa-help-title">
+            <h2 id="pwa-help-title">Pasang SI-PASAR di HP</h2>
+            <p data-help-other>Ketuk menu <b>&#8942;</b> di pojok kanan atas browser, lalu pilih <b>&ldquo;Pasang aplikasi&rdquo;</b> atau <b>&ldquo;Tambahkan ke layar utama&rdquo;</b>.</p>
+            <p data-help-ios hidden>Ketuk tombol <b>Bagikan</b> di Safari, lalu pilih <b>&ldquo;Tambah ke Layar Utama&rdquo;</b>.</p>
+            <p class="muted">Kalau menunya tidak muncul, buka SI-PASAR lewat alamat <b>https://</b>. Browser tidak menawarkan pasang aplikasi di alamat http biasa.</p>
+            <button type="button" class="btn btn-primary btn-block" data-help-close>Mengerti</button>
+        </dialog>
 
         {{-- Tab bawah (HP) --}}
         <nav class="tabbar" aria-label="Menu utama">

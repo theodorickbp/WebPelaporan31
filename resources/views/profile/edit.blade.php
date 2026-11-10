@@ -66,6 +66,12 @@
             <button type="submit" class="btn btn-primary">Ganti kata sandi</button>
         </form>
 
+        <div class="panel stack" data-pwa-section>
+            <h2>Aplikasi</h2>
+            <p class="muted">Pasang SI-PASAR di layar utama HP atau komputer supaya bisa dibuka cepat seperti aplikasi biasa.</p>
+            <button type="button" class="btn btn-soft" data-pwa-open><x-icon name="download" :size="18" /> Pasang aplikasi</button>
+        </div>
+
         <form method="POST" action="{{ route('profile.logout-others') }}" class="panel stack">
             @csrf
             <h2>Perangkat</h2>

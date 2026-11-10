@@ -19,10 +19,13 @@
         @error('limit') <div class="callout callout-bad"><strong>{{ $message }}</strong></div> @enderror
 
         {{-- 1. Foto bukti --}}
+{{-- CARI: KOMPONEN UNGGAH FOTO BUKTI — data-max/data-max-mb mengirim batas jumlah dan ukuran ke JavaScript photo-uploader.js. --}}
         <section class="uploader" data-uploader data-max="{{ config('sipasar.max_photos') }}" data-max-mb="{{ round(config('sipasar.max_photo_kb') / 1024) }}">
             <h2 id="photo-title">Foto bukti <span class="req" aria-hidden="true">*</span></h2>
 
+{{-- CARI: INPUT FILE UTAMA photos[] — file foto yang sudah dipilih/diproses akan disinkronkan ke input ini sebelum submit. --}}
             <input type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/gif,image/bmp" data-real hidden>
+{{-- CARI: INPUT KAMERA DAN GALERI — capture environment meminta kamera belakang di perangkat yang mendukung; input lain membuka galeri/file. --}}
             <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp" capture="environment" data-camera-input hidden>
             <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp" multiple data-gallery-input hidden>
 
@@ -33,6 +36,7 @@
                     <span class="dz-desktop">Seret foto ke kotak ini, tempel dengan Ctrl+V, atau pakai tombol di bawah.</span>
                 </p>
                 <div class="dropzone-actions">
+{{-- CARI: TOMBOL AMBIL FOTO DAN PILIH GALERI — data-action dibaca oleh public/js/photo-uploader.js. --}}
                     <button type="button" class="btn btn-primary" data-action="camera"><x-icon name="camera" :size="20" /> Ambil foto</button>
                     <button type="button" class="btn btn-soft" data-action="gallery"><x-icon name="image" :size="20" /> Pilih dari galeri</button>
                 </div>
@@ -51,6 +55,7 @@
             @endif
 
             {{-- Kamera browser untuk laptop --}}
+{{-- CARI: TAMPILAN MODAL KAMERA — elemen video menampilkan kamera, tombol snap mengambil foto, tombol close menghentikan kamera. --}}
             <div class="camera" data-camera hidden role="dialog" aria-modal="true" aria-label="Kamera">
                 <video autoplay playsinline muted></video>
                 <div class="camera-bar">
@@ -61,6 +66,7 @@
             </div>
         </section>
 
+{{-- CARI: PILIH KATEGORI KERUSAKAN — radio button kategori diisi dari enum ReportCategory. --}}
         {{-- 2. Jenis masalah --}}
         <section class="stack">
             <h2 id="cat-title">Masalahnya apa? <span class="req" aria-hidden="true">*</span></h2>
@@ -75,6 +81,7 @@
             @error('category') <p class="field-error">{{ $message }}</p> @enderror
         </section>
 
+{{-- CARI: INPUT JUDUL, LOKASI, DAN DESKRIPSI LAPORAN — data teks yang dikirim bersama foto bukti. --}}
         {{-- 3. Detail --}}
         <section class="stack">
             <div class="field">

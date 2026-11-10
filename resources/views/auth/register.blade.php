@@ -28,6 +28,7 @@
             </div>
 
             <form method="POST" action="{{ route('register.store') }}" class="stack">
+{{-- CARI: FORM REGISTER / BUAT AKUN — formulir pendaftaran siswa. @csrf adalah token keamanan formulir Laravel. --}}
                 @csrf
                 <div class="field">
                     <label for="name">Nama lengkap <span class="req" aria-hidden="true">*</span></label>
@@ -43,6 +44,7 @@
 
                 <div class="field">
                     <label for="nomor_induk">NISN <span class="req" aria-hidden="true">*</span></label>
+{{-- CARI: INPUT NISN — menerima nomor induk siswa; validasi unik dan 10 digit diproses di AuthController. --}}
                     <input id="nomor_induk" name="nomor_induk" type="text" class="input @error('nomor_induk') is-invalid @enderror" value="{{ old('nomor_induk') }}" required inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" placeholder="10 angka">
                     <p class="hint">Masukkan 10 angka sesuai data sekolah.</p>
                     @error('nomor_induk') <p class="field-error">{{ $message }}</p> @enderror
@@ -63,7 +65,8 @@
                 <div class="field">
                     <label for="password">Kata sandi <span class="req" aria-hidden="true">*</span></label>
                     <div class="input-group">
-                        <input id="password" name="password" type="password" class="input @error('password') is-invalid @enderror" required minlength="8" autocomplete="new-password">
+    {{-- CARI: INPUT PASSWORD DAN KONFIRMASI — password_confirmation harus sama dengan password. --}}
+                    <input id="password" name="password" type="password" class="input @error('password') is-invalid @enderror" required minlength="8" autocomplete="new-password">
                         <button type="button" data-toggle-password="password" aria-pressed="false">Tampilkan</button>
                     </div>
                     <p class="hint">Minimal 8 karakter.</p>

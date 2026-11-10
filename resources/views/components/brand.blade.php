@@ -1,8 +1,17 @@
 @props(['href' => null])
 <a href="{{ $href ?? route('home') }}" class="brand" aria-label="SI-PASAR, ke beranda">
-    <svg class="brand-mark" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
-        <rect width="32" height="32" rx="9" fill="#2F5BEA"/>
-        <path d="M9 17.5l5 5 9-11" stroke="#FFC933" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg class="brand-mark" viewBox="0 0 512 512" width="32" height="32" aria-hidden="true">
+<rect width="512" height="512" rx="112" fill="#2F5BEA"/>
+        <path d="M256 98 416 200H96Z" fill="#fff" stroke="#fff" stroke-width="20" stroke-linejoin="round"/>
+        <rect x="120" y="222" width="272" height="174" rx="14" fill="#fff"/>
+        <rect x="92" y="408" width="328" height="28" rx="12" fill="#fff"/>
+        <circle cx="256" cy="152" r="20" fill="#FFC933"/>
+        <g transform="translate(256 309) rotate(-45) scale(.95)">
+        <rect x="-90" y="-15" width="130" height="30" rx="15" fill="#2F5BEA"/>
+        <circle cx="62" cy="0" r="38" fill="#2F5BEA"/>
+        <rect x="62" y="-14" width="42" height="28" fill="#fff"/>
+        <circle cx="-75" cy="0" r="7" fill="#fff"/>
+        </g>
     </svg>
     <span class="brand-name">SI-PASAR</span>
 </a>
